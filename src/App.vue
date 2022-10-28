@@ -1,10 +1,8 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
 import { ref, provide, onMounted } from 'vue'
 const msg = ref('提供者')
-const name = ref('我是谁')
 provide('msg', msg)
 const child = ref()
 onMounted(() => {
@@ -24,7 +22,6 @@ onMounted(() => {
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <HelloWorld ref="child" v-model:name="name" />
 </template>
 
 <style scoped>
