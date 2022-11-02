@@ -11,8 +11,7 @@ const components: Record<string, Component> = {}
 Object.keys(modules).forEach((key: string) => {
   const name = key.match(/.*\/(.+)\.svg$/)
   if (name !== null) {
-    components[name[1]] = (modules[key] as Record<string, unknown>)
-      .default as Component
+    components[name[1]] = (modules[key] as Record<'default', Component>).default
   }
 })
 
