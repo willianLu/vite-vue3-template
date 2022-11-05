@@ -6,7 +6,7 @@ const msg = ref('提供者')
 provide('msg', msg)
 // const child = ref()
 onMounted(() => {
-  console.log('=============')
+  // console.log('=============')
   // console.log(child.value.msg)
   console.log('=============')
   // child.value.childFun('父组件')

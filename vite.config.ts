@@ -4,12 +4,17 @@ import { resolve } from 'path'
 import eslintPlugin from '@nabla/vite-plugin-eslint'
 // import { VitePWA } from 'vite-plugin-pwa'
 import svgLoader from 'vite-svg-loader'
+import { compression } from 'vite-plugin-compression2'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
-    eslintPlugin(),
+    eslintPlugin({
+      eslintOptions: {
+        cache: false
+      }
+    }),
     // 开启pwa，必须https服务支持
     // VitePWA({
     //   injectRegister: 'auto',
@@ -28,7 +33,8 @@ export default defineConfig({
     //   },
     //   registerType: 'autoUpdate'
     // }),
-    svgLoader()
+    svgLoader(),
+    compression()
   ],
   resolve: {
     alias: {
