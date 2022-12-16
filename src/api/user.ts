@@ -7,5 +7,5 @@ interface UserInfo {
   sex: number
 }
 export function queryUserInfo() {
-  return get<UserInfo, unknown>('/user/info')
+  return get<UserInfo>('/user/info')
 }

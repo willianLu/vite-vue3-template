@@ -1,6 +1,7 @@
-import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import { isError } from '../util'
 import { handleCustomResponseData } from './tool'
+import { CustomAxiosRequestConfig } from './types'
 
 // 发出请求前拦截
 const request = {
@@ -9,7 +10,7 @@ const request = {
    * @param {object} options 请求配置
    * @returns {object} 处理后的配置数据
    */
-  onFufilled<D>(config: AxiosRequestConfig<D>) {
+  onFufilled<D>(config: CustomAxiosRequestConfig<D>) {
     return config
   },
   /**
@@ -24,9 +25,20 @@ const request = {
       console.error(error)
       console.groupEnd()
     }
-    return Promise.reject(
-      handleCustomResponseData(-1, isResponseError ? error.message : '', error)
+    let { request } = error as any
+    if (!request) {
+      request = {
+        status: -1
+      }
+    }
+    request.data = handleCustomResponseData(
+      -1,
+      isResponseError ? error.message : '',
+      {
+        status: request.status
+      }
     )
+    return Promise.reject(request)
   }
 }
 
@@ -52,9 +64,21 @@ const response = {
       console.error(error)
       console.groupEnd()
     }
-    return Promise.reject(
-      handleCustomResponseData(-1, isResponseError ? error.message : '', error)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let { response } = error as any
+    if (!response) {
+      response = {
+        status: -2
+      }
+    }
+    response.data = handleCustomResponseData(
+      -1,
+      isResponseError ? error.message : '',
+      {
+        status: response.status
+      }
     )
+    return Promise.reject(response)
   }
 }
 

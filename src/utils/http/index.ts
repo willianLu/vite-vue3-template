@@ -1,6 +1,7 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+import axios, { AxiosInstance, AxiosResponse } from 'axios'
 import interceptors from './interceptors'
 import { CustomResponseData } from './tool'
+import { CustomAxiosRequestConfig } from './types'
 
 // 创建请求实例
 const HttpRequest: AxiosInstance = axios.create({})
@@ -20,15 +21,15 @@ HttpRequest.interceptors.response.use(
  * @description request请求方式，包含get\post\put\delete\head\options\patch等
  */
 export function request<T, D>(
-  config: AxiosRequestConfig<D>
-): Promise<CustomResponseData<T>> {
+  config: CustomAxiosRequestConfig<D>
+): Promise<AxiosResponse<CustomResponseData<T>, D> | CustomResponseData<T>> {
   return new Promise(resolve => {
-    HttpRequest.request(config)
+    HttpRequest.request<T, AxiosResponse<CustomResponseData<T>, D>, D>(config)
       .then(res => {
-        resolve(res.data)
+        resolve(config.options?.backOrigin ? res : res.data)
       })
       .catch(error => {
-        resolve(error)
+        resolve(config.options?.backOrigin ? error : error.data)
       })
   })
 }
@@ -40,18 +41,24 @@ export function request<T, D>(
  * @param {object | undefined} config 配置参数
  * @returns {Promise<any>}
  */
-export function get<T, D>(
+
+export async function get<T, D = unknown, U = 'data'>(
   url: string,
   params?: D,
-  config?: AxiosRequestConfig<D>
-): Promise<CustomResponseData<T>> {
+  config?: CustomAxiosRequestConfig<D>
+): Promise<
+  U extends 'origin'
+    ? AxiosResponse<CustomResponseData<T>, D>
+    : CustomResponseData<T>
+> {
   config = config || {}
-  return request({
+  return request<T, D>({
     ...config,
     url,
     method: 'get',
     params
-  })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  }) as any
 }
 
 /**
@@ -61,18 +68,23 @@ export function get<T, D>(
  * @param {object | undefined} config 配置参数
  * @returns {Promise<any>}
  */
-export function post<T, D>(
+export function post<T, D = unknown, U = 'data'>(
   url: string,
   data?: D,
-  config?: AxiosRequestConfig<D>
-): Promise<CustomResponseData<T>> {
+  config?: CustomAxiosRequestConfig<D>
+): Promise<
+  U extends 'origin'
+    ? AxiosResponse<CustomResponseData<T>, D>
+    : CustomResponseData<T>
+> {
   config = config || {}
-  return request({
+  return request<T, D>({
     ...config,
     url,
     method: 'post',
     data
-  })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  }) as any
 }
 
 export default HttpRequest

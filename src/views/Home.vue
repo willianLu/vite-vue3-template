@@ -9,9 +9,7 @@ import { queryUserInfo } from '@/api/user'
 
 onMounted(async () => {
   const res = await queryUserInfo()
-  if (res.data) {
-    console.log(res.data, '=========用户数据')
-  }
+  console.log(res, '=========用户数据')
 })
 </script>
 <style lang="less" scoped>
