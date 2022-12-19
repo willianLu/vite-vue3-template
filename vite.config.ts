@@ -5,11 +5,19 @@ import eslintPlugin from '@nabla/vite-plugin-eslint'
 // import { VitePWA } from 'vite-plugin-pwa'
 import svgLoader from 'vite-svg-loader'
 import { compression } from 'vite-plugin-compression2'
+// vant 按需加载
+import Components from 'unplugin-vue-components/vite'
+import { VantResolver } from 'unplugin-vue-components/resolvers'
+// 样式单位转换
+import pxtovw from 'postcss-px-to-viewport'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
+    Components({
+      resolvers: [VantResolver()]
+    }),
     eslintPlugin({
       eslintOptions: {
         cache: false
@@ -53,6 +61,13 @@ export default defineConfig({
         },
         javascriptEnabled: true
       }
+    },
+    postcss: {
+      plugins: [
+        pxtovw({
+          viewportWidth: 750
+        })
+      ]
     }
   },
   build: {
