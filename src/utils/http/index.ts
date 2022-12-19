@@ -20,10 +20,15 @@ HttpRequest.interceptors.response.use(
 /**
  * @description request请求方式，包含get\post\put\delete\head\options\patch等
  */
-export function request<T, D>(
+export function request<T, D, U>(
   config: CustomAxiosRequestConfig<D>
-): Promise<AxiosResponse<CustomResponseData<T>, D> | CustomResponseData<T>> {
-  return new Promise(resolve => {
+): Promise<
+  U extends 'origin'
+    ? AxiosResponse<CustomResponseData<T>, D>
+    : CustomResponseData<T>
+> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return new Promise<any>(resolve => {
     HttpRequest.request<T, AxiosResponse<CustomResponseData<T>, D>, D>(config)
       .then(res => {
         resolve(config.options?.backOrigin ? res : res.data)
@@ -46,19 +51,14 @@ export async function get<T, D = unknown, U = 'data'>(
   url: string,
   params?: D,
   config?: CustomAxiosRequestConfig<D>
-): Promise<
-  U extends 'origin'
-    ? AxiosResponse<CustomResponseData<T>, D>
-    : CustomResponseData<T>
-> {
+) {
   config = config || {}
-  return request<T, D>({
+  return request<T, D, U>({
     ...config,
     url,
     method: 'get',
     params
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  }) as any
+  })
 }
 
 /**
@@ -72,19 +72,14 @@ export function post<T, D = unknown, U = 'data'>(
   url: string,
   data?: D,
   config?: CustomAxiosRequestConfig<D>
-): Promise<
-  U extends 'origin'
-    ? AxiosResponse<CustomResponseData<T>, D>
-    : CustomResponseData<T>
-> {
+) {
   config = config || {}
-  return request<T, D>({
+  return request<T, D, U>({
     ...config,
     url,
     method: 'post',
     data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  }) as any
+  })
 }
 
 export default HttpRequest
