@@ -5,7 +5,7 @@ import App from './App.vue'
 
 // 开发环境动态引入mock
 if (import.meta.env.MODE === 'development') {
-  await import('../mock/index')
+  import('../mock/index')
 }
 
 const app = createApp(App)

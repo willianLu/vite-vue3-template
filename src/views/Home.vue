@@ -14,14 +14,16 @@
     <div v-for="item in 10" :key="item">内容</div>
   </PopupCenter>
   <PopupBottom v-model:show="isShow">
+    <div style="padding-bottom: 32px">我是头部</div>
     <div v-for="item in 100" :key="item">内容</div>
+    <div style="padding-bottom: 32px">我是底部</div>
   </PopupBottom>
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import SvgIcon from '@/components/SvgIcon.vue'
 import { queryUserInfo } from '@/api/user'
-import Loading from '@/components/Loading/index'
+// import Loading from '@/components/Loading/index'
 import PopupCenter from '@/components/Popup/PopupCenter.vue'
 import PopupBottom from '@/components/Popup/PopupBottom.vue'
 

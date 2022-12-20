@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     LoadingOverlay: typeof import('./src/components/Loading/LoadingOverlay.vue')['default']
     PopupBottom: typeof import('./src/components/Popup/PopupBottom.vue')['default']
     PopupCenter: typeof import('./src/components/Popup/PopupCenter.vue')['default']
+    PopupScroll: typeof import('./src/components/Popup/PopupScroll.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./src/components/SvgIcon.vue')['default']
