@@ -11,10 +11,18 @@ import { VantResolver } from 'unplugin-vue-components/resolvers'
 // 样式单位转换
 import pxtovw from 'postcss-px-to-viewport'
 
+const isDev = process.env.NODE_ENV === 'develpoment'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    host: '0.0.0.0'
+    host: '0.0.0.0',
+    proxy: {
+      '/api': {
+        target: 'https://szone-public.stg2.septnet.cn',
+        rewrite: path => path.replace(/^\/api/, '')
+      }
+    }
   },
   plugins: [
     vue(),
@@ -111,6 +119,6 @@ export default defineConfig({
   },
   esbuild: {
     // 打包删除console 和 debugger
-    drop: ['console', 'debugger']
+    drop: isDev ? [] : ['console', 'debugger']
   }
 })

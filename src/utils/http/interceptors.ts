@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 import { isError } from '../util'
-import { handleCustomResponseData } from './tool'
+import { handleRequestRule, handleCustomResponseData } from './tool'
 import { CustomAxiosRequestConfig } from './types'
 
 // 发出请求前拦截
@@ -11,7 +11,8 @@ const request = {
    * @returns {object} 处理后的配置数据
    */
   onFufilled<D>(config: CustomAxiosRequestConfig<D>) {
-    return config
+    console.log(config, '========请求配置')
+    return handleRequestRule(config)
   },
   /**
    * @description 发送请求错误拦截
@@ -28,7 +29,8 @@ const request = {
     let { request } = error as any
     if (!request) {
       request = {
-        status: -1
+        status: -1,
+        message: 'request返回错误'
       }
     }
     request.data = handleCustomResponseData(
@@ -68,7 +70,8 @@ const response = {
     let { response } = error as any
     if (!response) {
       response = {
-        status: -2
+        status: -2,
+        message: 'response返回错误'
       }
     }
     response.data = handleCustomResponseData(

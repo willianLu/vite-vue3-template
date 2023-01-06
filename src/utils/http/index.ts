@@ -2,9 +2,12 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios'
 import interceptors from './interceptors'
 import { CustomResponseData } from './tool'
 import { CustomAxiosRequestConfig } from './types'
+import Config from '@/config'
 
 // 创建请求实例
-const HttpRequest: AxiosInstance = axios.create({})
+const HttpRequest: AxiosInstance = axios.create({
+  baseURL: Config.baseUrl || ''
+})
 
 // 注册请求request拦截器
 HttpRequest.interceptors.request.use(

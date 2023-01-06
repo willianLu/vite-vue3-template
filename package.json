@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "dev": "cross-env NODE_ENV=develpoment vite",
+    "build": "cross-env NODE_ENV=production vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "prepare": "husky install"
   },
@@ -28,6 +28,7 @@
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^11.0.2",
     "axios-mock-adapter": "^1.21.2",
+    "cross-env": "^7.0.3",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",

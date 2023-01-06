@@ -39,8 +39,8 @@ function judgeDataType<T>(data: unknown, type: string): data is T {
  * @param {unknown} data 传入的数据
  * @returns {boolean} true | false
  */
-export function isObject<T = object>(data: unknown): data is T {
-  return judgeDataType<object>(data, DataType.OBJECT)
+export function isObject<T = Record<any, unknown>>(data: unknown): data is T {
+  return judgeDataType<Record<any, unknown>>(data, DataType.OBJECT)
 }
 
 /**
