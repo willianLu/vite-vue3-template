@@ -48,9 +48,9 @@ export function isObject<T = Record<any, unknown>>(data: unknown): data is T {
  * @param {unknown} data 传入的数据
  * @returns {boolean} true | false
  */
-export function isFunction(
+export function isFunction<T = any>(
   data: unknown
-): data is (...args: unknown[]) => unknown {
+): data is (...args: any[]) => T {
   return judgeDataType(data, DataType.FUNCTION)
 }
 
@@ -115,4 +115,17 @@ export function deferFun<T>(
       resolve(data)
     }, duration || 1000)
   })
+}
+/**
+ * @description 将json转化为query字符串
+ * @param {object} data json数据
+ * @returns {string} query字符串
+ */
+export function stringifyQuery(data: Record<string | number | symbol, any>) {
+  if (!isObject(data)) return ''
+  return Object.keys(data)
+    .map(key => {
+      return `${key}=${data[key]}`
+    })
+    .join('&')
 }

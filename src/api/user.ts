@@ -1,4 +1,4 @@
-import { get, post } from '@/utils/http'
+import { get, post, DomainType } from '@/utils/http'
 
 interface UserInfo {
   id: number
@@ -7,15 +7,21 @@ interface UserInfo {
   sex: number
 }
 export function queryUserInfo() {
-  return get<UserInfo>('/user/info')
+  return get<UserInfo, unknown, unknown, 'origin'>('/user/info')
 }
 
 export function queryImgCode() {
-  return get('/publicszoneui.service/VerifyImageService?userCode=15555116026')
+  return get<any, unknown, DomainType.gs>(
+    'https://www.prod.gs.com/product/imageCode?userData=122323',
+    undefined,
+    {
+      skipCommonData: true
+    }
+  )
 }
 
 export function queryList() {
-  return post('/publicszoneui.service/CrmService/List', {
+  return post('/product/list', {
     token: '774855A133F80E0F5F6ED26B294AE22F_WEB_PR8GUTY54DGRQDWZ',
     version: '2.0.0',
     grade: 'a1',

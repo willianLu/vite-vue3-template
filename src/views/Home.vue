@@ -26,20 +26,23 @@ import { queryUserInfo, queryImgCode, queryList } from '@/api/user'
 // import Loading from '@/components/Loading/index'
 import PopupCenter from '@/components/Popup/PopupCenter.vue'
 import PopupBottom from '@/components/Popup/PopupBottom.vue'
-import Config from '@/config'
 
 const isShow = ref(false)
 const showCenter = ref(false)
 onMounted(async () => {
-  const res = await queryUserInfo()
-  console.log(res, Config, '=========用户数据')
-  const imgRes = await queryImgCode()
-  console.log(imgRes, '=========图片数据')
-  const listRes = await queryList()
-  console.log(listRes, '=========列表数据')
+  getData()
 })
+async function getData() {
+  const [res] = await queryUserInfo()
+  console.log(res, '=========用户数据')
+  const [imgRes] = await queryImgCode()
+  console.log(imgRes, '=========图片数据')
+  const [listRes] = await queryList()
+  console.log(listRes, '=========列表数据')
+}
 function handleClick() {
-  isShow.value = !isShow.value
+  getData()
+  // isShow.value = !isShow.value
   // if (isShow.value) {
   //   setTimeout(() => {
   //     isShow.value = false

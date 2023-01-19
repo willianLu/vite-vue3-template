@@ -1,10 +1,10 @@
 import { ConfigType } from './index'
 const config: ConfigType = {
-  // domain: {
-  //   '//www.baidu.com': '//www.dev.baidu.com'
-  // },
+  domain: {
+    'https://www.prod.gs.com': 'http://192.168.11.120:7001'
+  },
   proxy: {
-    'https://szone-public.7net.cc': '/api'
+    'http://192.168.11.120:7001': '/api'
   }
 }
 

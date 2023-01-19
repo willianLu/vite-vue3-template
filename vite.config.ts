@@ -19,7 +19,7 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'https://szone-public.stg2.septnet.cn',
+        target: 'http://192.168.11.120:7001',
         rewrite: path => path.replace(/^\/api/, '')
       }
     }
@@ -119,6 +119,6 @@ export default defineConfig({
   },
   esbuild: {
     // 打包删除console 和 debugger
-    drop: isDev ? [] : ['console', 'debugger']
+    // drop: isDev ? [] : ['console', 'debugger']
   }
 })

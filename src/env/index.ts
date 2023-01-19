@@ -11,12 +11,12 @@ function buildMultiEnv() {
   }
   if (!isDev) {
     const { hostname } = window.location
-    if (/\.test\./.test(hostname)) {
-      multiEnv.isTest = true
-      multiEnv.type = 'test'
-    } else if (/\.prod\./.test(hostname)) {
+    if (/\.prod\./.test(hostname)) {
       multiEnv.isProduct = true
       multiEnv.type = 'prod'
+    } else {
+      multiEnv.isTest = true
+      multiEnv.type = 'test'
     }
   }
   return multiEnv
@@ -27,11 +27,13 @@ interface Env {
   isDev: boolean
   isTest: boolean
   isProduct: boolean
+  traceId: string
 }
 
 const env: Env = {
   isDev,
-  ...buildMultiEnv()
+  ...buildMultiEnv(),
+  traceId: '123456789'
 } as Env
 
 export default env
