@@ -6,7 +6,6 @@ import {
   RequestBackData
 } from './types'
 import Config from '@/config'
-export { DomainType } from './types'
 
 // 创建请求实例
 const HttpRequest: AxiosInstance = axios.create({

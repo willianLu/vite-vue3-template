@@ -8,6 +8,11 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     LoadingOverlay: typeof import('./src/components/Loading/LoadingOverlay.vue')['default']
+    PageContainer: typeof import('./src/components/Page/PageContainer.vue')['default']
+    PageContent: typeof import('./src/components/Page/PageContent.vue')['default']
+    PageFooter: typeof import('./src/components/Page/PageFooter.vue')['default']
+    PageHeader: typeof import('./src/components/Page/PageHeader.vue')['default']
+    PageNav: typeof import('./src/components/Page/PageNav.vue')['default']
     PopupBottom: typeof import('./src/components/Popup/PopupBottom.vue')['default']
     PopupCenter: typeof import('./src/components/Popup/PopupCenter.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

@@ -77,6 +77,7 @@ export default defineConfig({
       plugins: [
         pxtovw({
           viewportWidth: 750
+          // selectorBlackList: ['page-header', 'page-footer']
         })
       ]
     }

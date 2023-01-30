@@ -3,6 +3,10 @@
   <div>
     <SvgIcon name="checkbox" />
   </div>
+  <div>
+    <van-button @click="toNormalH5">常规h5页面</van-button>
+    <van-button @click="toSpecialH5">特殊h5页面</van-button>
+  </div>
   <van-button
     :loading="isShow"
     type="success"
@@ -26,9 +30,12 @@ import { queryUserInfo, queryImgCode, queryList } from '@/api/user'
 // import Loading from '@/components/Loading/index'
 import PopupCenter from '@/components/Popup/PopupCenter.vue'
 import PopupBottom from '@/components/Popup/PopupBottom.vue'
+import { useRouter } from 'vue-router'
 
 const isShow = ref(false)
 const showCenter = ref(false)
+const router = useRouter()
+
 onMounted(async () => {
   getData()
 })
@@ -41,13 +48,19 @@ async function getData() {
   console.log(listRes, '=========列表数据')
 }
 function handleClick() {
-  getData()
-  // isShow.value = !isShow.value
+  // getData()
+  isShow.value = !isShow.value
   // if (isShow.value) {
   //   setTimeout(() => {
   //     isShow.value = false
   //   }, 2000)
   // }
+}
+function toNormalH5() {
+  router.push('/normal-h5')
+}
+function toSpecialH5() {
+  router.push('/special-h5')
 }
 </script>
 <style lang="less" scoped>
