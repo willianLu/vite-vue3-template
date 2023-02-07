@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import router from './routes'
 import '@/assets/css/index.less'
 import App from './App.vue'
@@ -12,4 +13,4 @@ console.log(Env, '=====配置=====')
 // }
 
 const app = createApp(App)
-app.use(router).mount('#app')
+app.use(createPinia()).use(router).mount('#app')

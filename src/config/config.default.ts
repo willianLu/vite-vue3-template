@@ -1,6 +1,6 @@
-import { ConfigType } from '@/types/config'
+import { ConfigType } from '@/types'
 import Env from '@/env'
-import { DomainType } from '@/utils/http/types'
+import { DomainType } from '@/enum'
 
 const config: ConfigType = {
   baseUrl: 'http://192.168.11.120:7001',
@@ -9,7 +9,19 @@ const config: ConfigType = {
   },
   domainType: {
     'https://www.prod.gs.com': DomainType.gs
-  }
+  },
+  tabs: [
+    {
+      title: '首页',
+      icon: 'home',
+      url: '/'
+    },
+    {
+      title: '我的',
+      icon: 'user',
+      url: '/my'
+    }
+  ]
 }
 
 export default config

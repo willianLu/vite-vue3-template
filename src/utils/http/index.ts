@@ -4,7 +4,7 @@ import {
   CustomAxiosRequestConfig,
   CustomResponseData,
   RequestBackData
-} from './types'
+} from '@/types'
 import Config from '@/config'
 
 // 创建请求实例

@@ -11,6 +11,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import SvgIcon from '@/components/SvgIcon.vue'
+console.log('========Icon初始化=========')
 // svg文件名集合
 const list = ref<string[]>([])
 // 解析svg文件名称
@@ -32,7 +33,7 @@ Object.keys(modules).forEach((key: string) => {
     width: 110px;
     text-align: center;
     .name {
-      font-size: 14px;
+      font-size: 24px;
       padding-top: 15px;
       color: #030303;
     }

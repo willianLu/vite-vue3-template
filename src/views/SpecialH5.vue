@@ -14,10 +14,19 @@
     </template>
   </PageContainer>
 </template>
+<script lang="ts">
+export default {
+  name: 'SpecialH5Page'
+}
+</script>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onActivated } from 'vue'
 import PageContainer from '@/components/Page/PageContainer.vue'
 import PageNav from '@/components/Page/PageNav.vue'
+console.log('========特殊h5初始化=========')
+onActivated(() => {
+  console.log('==========特殊h5激活==========')
+})
 const headerBgColor = ref('')
 function handleScroll(event: Event) {
   const { scrollTop } = event.target as any

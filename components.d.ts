@@ -13,12 +13,17 @@ declare module '@vue/runtime-core' {
     PageFooter: typeof import('./src/components/Page/PageFooter.vue')['default']
     PageHeader: typeof import('./src/components/Page/PageHeader.vue')['default']
     PageNav: typeof import('./src/components/Page/PageNav.vue')['default']
+    PageTabbar: typeof import('./src/components/Page/PageTabbar.vue')['default']
     PopupBottom: typeof import('./src/components/Popup/PopupBottom.vue')['default']
     PopupCenter: typeof import('./src/components/Popup/PopupCenter.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ScrollAd: typeof import('./src/components/ScrollAd/index.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon.vue')['default']
     VanButton: typeof import('vant/es')['Button']
+    VanCheckbox: typeof import('vant/es')['Checkbox']
+    VanField: typeof import('vant/es')['Field']
+    VanInput: typeof import('vant/es')['Input']
     VanPopup: typeof import('vant/es')['Popup']
   }
 }

@@ -1,4 +1,4 @@
-import { CustomAxiosRequestConfig, CustomResponseData } from './types'
+import { CustomAxiosRequestConfig, CustomResponseData } from '@/types'
 import { isObject, isFunction, stringifyQuery } from '@/utils/util'
 import Config from '@/config'
 import Env from '@/env'

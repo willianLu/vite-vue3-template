@@ -7,12 +7,12 @@ function buildMultiEnv() {
   const multiEnv = {
     type: 'dev',
     isTest: false,
-    isProduct: false
+    isProd: false
   }
   if (!isDev) {
     const { hostname } = window.location
     if (/\.prod\./.test(hostname)) {
-      multiEnv.isProduct = true
+      multiEnv.isProd = true
       multiEnv.type = 'prod'
     } else {
       multiEnv.isTest = true
@@ -26,7 +26,7 @@ interface Env {
   type: 'dev' | 'test' | 'prod'
   isDev: boolean
   isTest: boolean
-  isProduct: boolean
+  isProd: boolean
   traceId: string
 }
 

@@ -43,7 +43,7 @@ defineEmits(['scroll'])
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: #f4f4f4;
+  background-color: #f7f8fb;
   overflow: hidden;
 }
 .page-container-flex {

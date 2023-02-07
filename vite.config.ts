@@ -76,8 +76,12 @@ export default defineConfig({
     postcss: {
       plugins: [
         pxtovw({
-          viewportWidth: 750
-          // selectorBlackList: ['page-header', 'page-footer']
+          viewportWidth: 750,
+          exclude: [/node_modules\/vant/i]
+        }),
+        pxtovw({
+          viewportWidth: 375,
+          include: [/node_modules\/vant/i]
         })
       ]
     }

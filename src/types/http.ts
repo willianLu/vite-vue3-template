@@ -1,4 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { DomainType } from '@/enum'
 
 /**
  * @description 自定义请求配置参数
@@ -24,10 +25,6 @@ export interface GsResponseData<T = any> {
   status: number
   message: string
   data?: T
-}
-
-export enum DomainType {
-  gs = 'gs'
 }
 
 type BackData<T, D = 'default'> = D extends DomainType.gs

@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 import { handleRequestRule } from './tool'
-import { CustomAxiosRequestConfig } from './types'
+import { CustomAxiosRequestConfig } from '@/types'
 
 // 发出请求前拦截
 const request = {
