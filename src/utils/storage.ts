@@ -32,7 +32,7 @@ export const local = {
    * @param {string} key 键名
    * @returns {any}
    */
-  getItem(key: string) {
+  getItem<T = any>(key: string): T {
     const res = window.localStorage.getItem(key)
     let data!: StorageData
     try {
@@ -42,16 +42,16 @@ export const local = {
         console.error(error)
       }
     }
-    if (!isObject(data)) return
+    if (!isObject(data)) return undefined as any
     if (data.timestamp && data.maxAge) {
       const now = new Date().getTime()
       const maxAge = ms(data.maxAge)
       if (now - data.timestamp > maxAge) {
         window.localStorage.removeItem(key)
-        return
+        return undefined as any
       }
     }
-    return data.value
+    return data.value as any
   },
   /**
    * @description 移除对应健名的存储值
@@ -97,16 +97,18 @@ export const session = {
    * @param {string} key 键名
    * @returns {any}
    */
-  getItem(key: string) {
+  getItem<T = any>(key: string): T {
     const res = window.sessionStorage.getItem(key)
-    let data = {}
+    let data: any
     try {
       data = res ? JSON.parse(res) : {}
     } catch (error) {
       //
     }
-    if (!isObject(data)) return
-    return data.value
+    if (!isObject(data)) {
+      return undefined as any
+    }
+    return data.value as any
   },
   /**
    * @description 移除对应健名的存储值

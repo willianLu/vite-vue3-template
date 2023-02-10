@@ -1,7 +1,7 @@
 <template>
   <div ref="container" class="scroll-ad-container flex-v-center">
     <div
-      class="scroll-add-box flex-v-center"
+      class="scroll-ad-box flex-v-center"
       :class="{ 'scroll-ad-animation': duration > 0 }"
       :style="boxStyle"
     >
@@ -67,7 +67,7 @@ watch(
   color: #666;
   overflow: hidden;
 }
-.scroll-add-box {
+.scroll-ad-box {
   display: inline-flex;
   flex-wrap: nowrap;
   ul {

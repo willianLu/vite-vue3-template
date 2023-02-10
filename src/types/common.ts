@@ -1,3 +1,4 @@
+import { RouteLocationNormalized } from 'vue-router'
 export interface Tabbar {
   title: string
   icon: string
@@ -9,6 +10,12 @@ export interface PageAliveAction {
   delta?: number
 }
 
+export type PageAliveRoute = {
+  fullPath: string
+  href?: string
+  name: string
+  position: number
+}
 export interface StorageOptions {
   maxAge?: number | string
   timestamp?: number

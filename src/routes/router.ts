@@ -14,12 +14,40 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/normal-h5',
     name: 'NormalH5Page',
-    component: () => import('@/views/NormalH5.vue')
+    component: () => import('@/views/NormalH5.vue'),
+    beforeEnter: () => {
+      console.log('===路由独享守卫===')
+    }
   },
   {
     path: '/special-h5',
     name: 'SpecialH5Page',
     component: () => import('@/views/SpecialH5.vue')
+  },
+  {
+    path: '/page-a',
+    name: 'APage',
+    component: () => import('@/views/PageA.vue')
+  },
+  {
+    path: '/page-b',
+    name: 'BPage',
+    component: () => import('@/views/PageB.vue')
+  },
+  {
+    path: '/page-c',
+    name: 'CPage',
+    component: () => import('@/views/PageC.vue')
+  },
+  {
+    path: '/detail',
+    name: 'DetailPage',
+    component: () => import('@/views/Detail.vue')
+  },
+  {
+    path: '/order-detail/:id',
+    name: 'OrderDetailPage',
+    component: () => import('@/views/OrderDetail.vue')
   }
 ]
 if (import.meta.env.MODE === 'development') {

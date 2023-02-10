@@ -25,5 +25,6 @@ declare module '@vue/runtime-core' {
     VanField: typeof import('vant/es')['Field']
     VanInput: typeof import('vant/es')['Input']
     VanPopup: typeof import('vant/es')['Popup']
+    VanSkeleton: typeof import('vant/es')['Skeleton']
   }
 }

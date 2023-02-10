@@ -9,7 +9,7 @@
       ref="box"
       :class="{
         'scroll-ad-transition': isTransition,
-        'scroll-add-box': continuous
+        'scroll-ad-box': continuous
       }"
       :style="positionStyle"
     >
@@ -123,7 +123,7 @@ onUnmounted(() => {
     overflow: hidden;
   }
 }
-.scroll-add-box {
+.scroll-ad-box {
   animation: ad 1s infinite linear 1s;
   transform: translateY(0);
 }

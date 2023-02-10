@@ -7,7 +7,13 @@
     <div class="ad-box">
       <ScrollAd class="ad-wrap" :list="adList" enable-x />
     </div>
-    <div>
+    <div class="margin-32">
+      <a href="http://localhost:5173/#/icons" style="margin-right: 16px"
+        >icon链接跳转</a
+      >
+      <a href="http://localhost:6800">本地页面</a>
+    </div>
+    <div class="margin-32">
       <van-button size="small" @click="toPage('normal-h5')">
         常规h5页面
       </van-button>
@@ -18,13 +24,16 @@
       <van-button size="small" @click="toGo(1)">向前一步</van-button>
       <van-button size="small" @click="toGo(2)">向前多步</van-button>
     </div>
-    <van-button
-      :loading="isShow"
-      type="success"
-      loading-text="查看"
-      @click="handleClick"
-      >查看</van-button
-    >
+    <div class="margin-32">
+      <van-button
+        :loading="isShow"
+        type="success"
+        loading-text="查看"
+        @click="handleClick"
+        >查看</van-button
+      >
+    </div>
+
     <PopupCenter v-model:show="showCenter" title="请选择高考科目">
       <div v-for="item in 10" :key="item">内容</div>
     </PopupCenter>
@@ -125,5 +134,8 @@ function toGo(delta: number) {
   .ad-wrap {
     color: #ee5353;
   }
+}
+.margin-32 {
+  margin: 0 32px 32px;
 }
 </style>

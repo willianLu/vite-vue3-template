@@ -1,22 +1,12 @@
 <template>
   <PageContainer>
     <template #header>
-      <PageNav title="标准h5">
-        <template #left>
-          <SvgIcon class="pet" name="pet" />
-        </template>
-        <template #right>
-          <SvgIcon class="shopping" name="user" @click="toUser" />
-        </template>
-      </PageNav>
+      <PageNav title="页面B"></PageNav>
     </template>
     <div v-if="loading" class="skeleton">
       <van-skeleton title :row="3" />
     </div>
     <template v-else>
-      <div>
-        <a href="http://localhost:6800">本地页面</a>
-      </div>
       <div>
         <van-button size="small" @click="toPage('special-h5')">
           特殊h5页面
@@ -36,40 +26,37 @@
         <van-button size="small" @click="toPage('order-detail/2')"
           >订单详情页面2</van-button
         >
-        <van-button size="small" @click="toForward"> 向前走 </van-button>
-        <van-button size="small" @click="toReplacePage('normal-h5')">
-          replace: 标准h5页面
-        </van-button>
-        <van-button size="small" @click="toReplacePage('special-h5')">
-          replace: 特殊h5页面
-        </van-button>
+        <van-button size="small" @click="toGo(-2)">后退两步</van-button>
+        <van-button size="small" @click="toGo(-3)">后退三步</van-button>
+        <van-button size="small" @click="toGo(-4)">后退四步</van-button>
+        <van-button size="small" @click="toGo(-5)">后退五步</van-button>
+        <van-button size="small" @click="toGo(0)">不前进</van-button>
+        <van-button size="small" @click="toForward">forward前进</van-button>
+        <van-button size="small" @click="toGo(1)">向前一步</van-button>
+        <van-button size="small" @click="toGo(2)">向前二步</van-button>
+        <van-button size="small" @click="toGo(3)">向前三步</van-button>
       </div>
-      <div v-for="item in 50" :key="item">红楼梦</div>
+      <div>
+        <input placeholder="请输入文本" />
+      </div>
+      <div v-for="item in 50" :key="item">页面B</div>
     </template>
   </PageContainer>
 </template>
 <script lang="ts">
 export default {
-  name: 'NormalH5Page',
-  beforeRouteEnter() {
-    console.log('===组件内守卫=beforeRouteEnter===')
-  },
-  beforeRouteUpdate() {
-    console.log('===组件内守卫=beforeRouteUpdate===')
-  }
+  name: 'BPage'
 }
 </script>
 <script setup lang="ts">
-import { onActivated, ref, onMounted } from 'vue'
+import { ref, onMounted, onActivated } from 'vue'
 import PageContainer from '@/components/Page/PageContainer.vue'
 import PageNav from '@/components/Page/PageNav.vue'
-import SvgIcon from '@/components/SvgIcon.vue'
 import { useRouter } from 'vue-router'
-import { session } from '@/utils/storage'
-console.log('========标准h5初始化=========')
-session.setItem('normalH5', '访问页面')
+const router = useRouter()
+console.log('========页面B初始化=========')
 onActivated(() => {
-  console.log('==========标准h5激活==========')
+  console.log('==========页面B激活==========')
 })
 const loading = ref(true)
 onMounted(() => {
@@ -77,31 +64,17 @@ onMounted(() => {
     loading.value = false
   }, 1000)
 })
-const router = useRouter()
-function toUser() {
-  router.back()
-}
 function toPage(path: string) {
   router.push(`/${path}`)
-}
-function toReplacePage(path: string) {
-  router.replace(`/${path}`)
 }
 function toForward() {
   router.forward()
 }
+function toGo(delta: number) {
+  router.go(delta)
+}
 </script>
 <style lang="less" scoped>
-.pet {
-  font-size: 32px;
-  color: #078d6b;
-}
-.shopping {
-  margin-right: 24px;
-  font-size: 32px;
-  color: #ee5353;
-  cursor: pointer;
-}
 .skeleton {
   margin: 24px 0;
   padding: 24px 0;
