@@ -18,23 +18,18 @@ export function handlePageAlive(
   ) {
     return
   }
-  // 路由历史状态，vue-router提供的数据
-  const historyState = history.state
+  // 前一次访问的路由信息
   const preCurrent = current
   // 查找缓存中是否包含当前路由的name
   const index = to.name ? names.findIndex(item => item === to.name) : -1
-  console.group('===========路由堆栈处理===========')
-  console.log('[ preCurrent ]', preCurrent)
-  console.log('[ action ]', action)
-  console.groupEnd()
   // 设置当前的路由信息
   current = {
     fullPath: to.fullPath,
-    href: (to as any).href,
     name: to.name as string,
-    position: historyState.position
+    position: history.state.position
   }
   if (action) {
+    // vue-route 路由方法跳转
     switch (action.type) {
       case 'push':
       case 'replace':
@@ -81,11 +76,13 @@ export function handlePageAlive(
         break
     }
   } else if ((from as any).href) {
+    // 条件：浏览器前进后退按钮操作，或直接复制链接访问
     let isBack = preCurrent && current.position < preCurrent.position
     if (preCurrent && preCurrent.position === current.position) {
       if (preCurrent.fullPath === current.fullPath) {
         // 此为当前页面刷新
       } else {
+        // 拷贝其他路由链接放到浏览器中访问，虽会改变history堆栈变化，但是history.state却是错误的，需要同步纠正
         current.position = history.state.position = history.length - 1
         history.state.back = preCurrent.fullPath
         history.state.forward = null
@@ -94,16 +91,10 @@ export function handlePageAlive(
         routes.push(current)
       }
     }
-    console.group('===========浏览器菜单栏操作===========')
-    console.log('[ 前进 ]', !isBack)
-    console.log('[ 返回 ]', isBack)
-    console.groupEnd()
     if (isBack) {
       removeHadName(from.name as string, names)
-    } else {
-      if (index > -1) {
-        names.splice(index, 1)
-      }
+    } else if (index > -1) {
+      names.splice(index, 1)
     }
     if (to.name && index === -1 && !isHasSameByBefore(current, routes)) {
       names.push(to.name as string)
@@ -119,7 +110,7 @@ export function handlePageAlive(
       preCurrent.fullPath === current.fullPath &&
       preCurrent.position === current.position
     ) {
-      // 条件：依然进入当前页面
+      // 条件：上一次访问路由与当前路由一致
       // 场景：1.页面刷新 2.由其他站点前进到当前页面 3.由其他站点返回到当前页面
       if (history.length !== routes.length) {
         routes = routes.slice(0, preCurrent.position + 1)
@@ -128,6 +119,7 @@ export function handlePageAlive(
         }
       }
     } else if (history.length === current.position + 1) {
+      // 条件：进入当前路由，且路由在history路由堆栈的顶部
       let endIndex = current.position
       // 前进方向
       if (preCurrent.position < current.position) {

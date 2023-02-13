@@ -12,7 +12,6 @@ export interface PageAliveAction {
 
 export type PageAliveRoute = {
   fullPath: string
-  href?: string
   name: string
   position: number
 }
