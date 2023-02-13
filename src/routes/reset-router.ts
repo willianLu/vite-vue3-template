@@ -1,6 +1,6 @@
 import { RouteLocationRaw } from 'vue-router'
 import router from './router'
-import usePageAliveStore from '@/store/pageAlive'
+import usePageAliveStore from '@/store/page-alive'
 import { PageAliveAction } from '@/types'
 
 function setPageAction(data: PageAliveAction) {

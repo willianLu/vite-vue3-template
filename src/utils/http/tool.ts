@@ -43,7 +43,7 @@ function handleDomainRule(config: CustomAxiosRequestConfig) {
     } else if (config.baseURL) {
       // 当url不包含域名时，则对baseUrl做处理
       Object.keys(domain).some(key => {
-        // 使用indexOf判断，预订域名与配置一致，减少处理逻辑
+        // baseUrl与配置一致
         if (config.baseURL === key) {
           config.baseURL = domain[key]
           return true
@@ -60,29 +60,23 @@ function handleDomainRule(config: CustomAxiosRequestConfig) {
 function handleDomainProxy(config: CustomAxiosRequestConfig) {
   if (!Env.isDev || !Config.proxy) return
   const url = config.url || ''
-  // 若url中包含域名，直接处理 url
-  if (isIncludeDomain(url)) {
+  const hasDomain = isIncludeDomain(url)
+  // 若url中包含域名，处理config.url
+  // 若baseUrl中包含域名，处理confog.baseUrl
+  if (hasDomain || config.baseURL) {
+    const domain = (hasDomain ? url : config.baseURL) as string
     Object.keys(Config.proxy).some(key => {
       // 使用indexOf判断，预订域名与配置一致，减少处理逻辑
-      if (url.indexOf(key) === 0) {
-        config.url = url.replace(
-          key,
-          (Config.proxy as Record<string, string>)[key]
-        )
-        config.baseURL = ''
-        return true
-      }
-    })
-  } else if (config.baseURL) {
-    // 当url不包含域名时，则对baseUrl做处理
-    const baseURL = config.baseURL || ''
-    Object.keys(Config.proxy).some(key => {
-      // 使用indexOf判断，预订域名与配置一致，减少处理逻辑
-      if (baseURL.indexOf(key) === 0) {
-        config.baseURL = baseURL.replace(
-          key,
-          (Config.proxy as Record<string, string>)[key]
-        )
+      if (domain.indexOf(key) === 0) {
+        const proxy = Config.proxy as Record<string, string>
+        const _url = domain.replace(key, proxy[key])
+        if (hasDomain) {
+          config.url = _url
+          // url中包含域名时，需要把baseURL设置为空，否则影响代理
+          config.baseURL = ''
+        } else {
+          config.baseURL = _url
+        }
         return true
       }
     })
@@ -102,26 +96,22 @@ function isIncludeDomain(url: string) {
  * @returns {void}
  */
 function handleCommonParams(config: CustomAxiosRequestConfig) {
-  const { method, params, data, skipCommonData, isFormData, url, baseURL } =
-    config
-  // 获取公共参数，不区分域名
-  let commonParams = Config.commonParams || {}
-  const { domainParams } = Config
-  // 若存在域名参数单独处理
-  if (domainParams) {
-    // 在api上配置了域名处理
-    const isHasDomain = Object.keys(domainParams).some(item => {
-      if (url?.indexOf(item) === 0) {
-        const fun = domainParams[item]
-        const _params = isFunction(fun) ? fun() : domainParams[item]
-        commonParams = { ...commonParams, ..._params }
-        return true
-      }
-    })
-    // api未配置域名，按baseUrl处理
-    if (!isHasDomain && baseURL) {
+  const { method, params, data, skipCommonData, isFormData, baseURL } = config
+  // 根据请求类型，取不同的参数数据
+  let _data = method === 'get' ? params : data
+  // 不跳过公共参数处理，且参数是对象或者未设置参数
+  if (!skipCommonData && (isObject(_data) || _data === undefined)) {
+    const url = config.url || ''
+    // 获取公共参数，不区分域名
+    let commonParams = Config.commonParams || {}
+    const { domainParams } = Config
+    const hasDomain = isIncludeDomain(url)
+    // 若存在域名参数单独处理
+    if (domainParams && (hasDomain || baseURL)) {
+      const domain = hasDomain ? url : baseURL
+      // 在api上配置了域名处理
       Object.keys(domainParams).some(item => {
-        if (baseURL === item) {
+        if ((<string>domain).indexOf(item) === 0) {
           const fun = domainParams[item]
           const _params = isFunction(fun) ? fun() : domainParams[item]
           commonParams = { ...commonParams, ..._params }
@@ -129,11 +119,6 @@ function handleCommonParams(config: CustomAxiosRequestConfig) {
         }
       })
     }
-  }
-  // 根据请求类型，取不同的参数数据
-  let _data = method === 'get' ? params : data
-  // 不跳过公共参数处理，且参数是对象或者未设置参数
-  if (!skipCommonData && (isObject(_data) || _data === undefined)) {
     _data = { ...commonParams, ..._data }
   }
   // formData数据，特殊处理

@@ -48,7 +48,7 @@ export function request<T, D, M, U>(
  * @returns {Promise<any>}
  */
 
-export async function get<T, D = unknown, M = 'default', U = 'data'>(
+export async function get<T = any, D = any, M = 'default', U = 'data'>(
   url: string,
   params?: D,
   config?: CustomAxiosRequestConfig<D>
@@ -69,7 +69,7 @@ export async function get<T, D = unknown, M = 'default', U = 'data'>(
  * @param {object | undefined} config 配置参数
  * @returns {Promise<any>}
  */
-export function post<T, D = unknown, M = 'default', U = 'data'>(
+export function post<T = any, D = any, M = 'default', U = 'data'>(
   url: string,
   data?: D,
   config?: CustomAxiosRequestConfig<D>

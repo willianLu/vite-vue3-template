@@ -1,5 +1,5 @@
 import router from './router'
-import { handlePageAlive } from './pageAlive'
+import { handlePageAlive } from './page-alive'
 
 router.afterEach((to, from) => {
   // 处理页面缓存

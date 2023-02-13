@@ -1,5 +1,5 @@
 import { RouteLocationNormalized } from 'vue-router'
-import usePageAliveStore from '@/store/pageAlive'
+import usePageAliveStore from '@/store/page-alive'
 import { PageAliveRoute } from '@/types'
 
 // 处理页面缓存

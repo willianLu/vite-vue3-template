@@ -1,4 +1,5 @@
-import { get, post, DomainType } from '@/utils/http'
+import { get, post } from '@/utils/http'
+import { DomainType } from '@/enum'
 
 interface UserInfo {
   id: number
@@ -18,6 +19,10 @@ export function queryImgCode() {
       skipCommonData: true
     }
   )
+}
+
+export function queryTcUserInfo() {
+  return get('/user/info')
 }
 
 export function queryList() {

@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import usePageAliveStore from '@/store/pageAlive'
-const pageAliveStore = usePageAliveStore()
-</script>
-
 <template>
   <RouterView v-slot="{ Component }">
     <KeepAlive :include="pageAliveStore.names">
@@ -10,7 +5,10 @@ const pageAliveStore = usePageAliveStore()
     </KeepAlive>
   </RouterView>
 </template>
-
+<script setup lang="ts">
+import usePageAliveStore from '@/store/page-alive'
+const pageAliveStore = usePageAliveStore()
+</script>
 <style>
 #app {
   width: 100%;

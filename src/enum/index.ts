@@ -1,3 +1,5 @@
 export enum DomainType {
-  gs = 'gs'
+  gs = 'gs',
+  tc = 'tc',
+  qt = 'qt'
 }

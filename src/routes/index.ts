@@ -1,5 +1,5 @@
 import router from './router'
-import './resetRouter'
+import './reset-router'
 import './guard'
 
 export default router
