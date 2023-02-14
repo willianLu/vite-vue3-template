@@ -6,18 +6,17 @@ const config: ConfigType = {
   commonParams: {
     traceId: Env.traceId
   },
-  tabs: [
-    {
-      title: '首页',
-      icon: 'home',
-      url: '/'
+  domainParams: {
+    'https://www.prod.gs.com': {
+      domain: 'gs'
     },
-    {
-      title: '我的',
-      icon: 'user',
-      url: '/my'
+    'https://www.prod.tc.com': function () {
+      return {
+        domain: 'tc',
+        name: 'tc-qiang'
+      }
     }
-  ]
+  }
 }
 
 export default config

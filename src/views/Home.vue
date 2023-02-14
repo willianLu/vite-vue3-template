@@ -7,6 +7,9 @@
     <div class="ad-box">
       <ScrollAd class="ad-wrap" :list="adList" enable-x />
     </div>
+    <div class="ad-box">
+      <ScrollAd class="ad-wrap" :list="adList" :count="2" continuous />
+    </div>
     <div class="margin-32">
       <a href="http://localhost:5173/#/icons" style="margin-right: 16px"
         >icon链接跳转</a
@@ -54,21 +57,21 @@ export default {
 </script>
 <script setup lang="ts">
 import { onMounted, ref, onActivated } from 'vue'
-import SvgIcon from '@/components/SvgIcon.vue'
+import SvgIcon from '@/components/svg-icon.vue'
 import { queryUserInfo, queryImgCode, queryList } from '@/api/user'
-import PageContainer from '@/components/Page/PageContainer.vue'
-import PageTabbar from '@/components/Page/PageTabbar.vue'
-// import Loading from '@/components/Loading/index'
-import PopupCenter from '@/components/Popup/PopupCenter.vue'
-import PopupBottom from '@/components/Popup/PopupBottom.vue'
+import PageContainer from '@/components/page/container.vue'
+import PageTabbar from '@/components/page/tabbar.vue'
+// import Loading from '@/components/loading/index'
+import PopupCenter from '@/components/popup/center.vue'
+import PopupBottom from '@/components/popup/bottom.vue'
 import { useRouter } from 'vue-router'
-import Config from '@/config'
-import ScrollAd from './components/ScrollAd/index.vue'
+import { tabBarList } from '@/config'
+import ScrollAd from './components/scroll-ad/index.vue'
 
 const isShow = ref(false)
 const showCenter = ref(false)
 const router = useRouter()
-const tabs = Config.tabs as any
+const tabs = tabBarList
 console.log('========首页初始化=========')
 const shopList = ref(['宝宝巴士', '孙悟空', '毛笔字', '好看的电影'])
 const adList = ref([

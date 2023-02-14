@@ -1,6 +1,6 @@
-import { CustomAxiosRequestConfig, CustomResponseData } from '@/types'
+import { CustomAxiosRequestConfig } from '@/types'
 import { isObject, isFunction, stringifyQuery } from '@/utils/util'
-import Config from '@/config'
+import Config, { devProxy } from '@/config'
 import Env from '@/env'
 
 /**
@@ -9,17 +9,17 @@ import Env from '@/env'
  * @param {string | undefined} message 返回信息
  * @returns {object}
  */
-export function handleCustomResponseData<T>(
-  code: number,
-  message?: string,
-  data?: T
-): CustomResponseData<T> {
-  return {
-    code,
-    message: message || '',
-    data
-  }
-}
+// export function handleCustomResponseData<T = any>(
+//   code: number,
+//   message?: string,
+//   data?: T
+// ): CustomResponseData<T> {
+//   return {
+//     code,
+//     message: message || '',
+//     data
+//   }
+// }
 
 /**
  * @description 处理域名规则，多域名服务器预发环境处理
@@ -28,28 +28,26 @@ export function handleCustomResponseData<T>(
  */
 function handleDomainRule(config: CustomAxiosRequestConfig) {
   const { domain } = Config
-  const url = String(config.url || '').trim()
+  if (!domain || !isObject(domain)) return
+  let url = String(config.url || '').trim()
+  const hasDomain = isIncludeDomain(url)
   // 若配置了域名映射，则对映射做处理
-  if (domain && isObject(domain)) {
-    // 若url中包含域名，直接处理 url
-    if (isIncludeDomain(url)) {
-      Object.keys(domain).some(key => {
-        // 使用indexOf判断，预订域名与配置一致，减少处理逻辑
-        if (url.indexOf(key) === 0) {
-          config.url = url.replace(key, domain[key])
-          return true
+  if (hasDomain || config.baseURL) {
+    // 若url中包含域名，直接处理url
+    // 当url不包含域名时，则对baseUrl做处理
+    url = (hasDomain ? url : config.baseURL) as string
+    Object.keys(domain).some(key => {
+      // 使用indexOf判断，访问域名与配置一致，减少处理逻辑
+      if (url.indexOf(key) === 0) {
+        const _url = url.replace(key, domain[key])
+        if (hasDomain) {
+          config.url = _url
+        } else {
+          config.baseURL = _url
         }
-      })
-    } else if (config.baseURL) {
-      // 当url不包含域名时，则对baseUrl做处理
-      Object.keys(domain).some(key => {
-        // baseUrl与配置一致
-        if (config.baseURL === key) {
-          config.baseURL = domain[key]
-          return true
-        }
-      })
-    }
+        return true
+      }
+    })
   }
 }
 
@@ -58,18 +56,17 @@ function handleDomainRule(config: CustomAxiosRequestConfig) {
  * @param {object} config CustomAxiosRequestConfig
  */
 function handleDomainProxy(config: CustomAxiosRequestConfig) {
-  if (!Env.isDev || !Config.proxy) return
+  if (!Env.isDev || !devProxy) return
   const url = config.url || ''
   const hasDomain = isIncludeDomain(url)
   // 若url中包含域名，处理config.url
   // 若baseUrl中包含域名，处理confog.baseUrl
   if (hasDomain || config.baseURL) {
     const domain = (hasDomain ? url : config.baseURL) as string
-    Object.keys(Config.proxy).some(key => {
+    Object.keys(devProxy).some(key => {
       // 使用indexOf判断，预订域名与配置一致，减少处理逻辑
       if (domain.indexOf(key) === 0) {
-        const proxy = Config.proxy as Record<string, string>
-        const _url = domain.replace(key, proxy[key])
+        const _url = domain.replace(key, devProxy[key])
         if (hasDomain) {
           config.url = _url
           // url中包含域名时，需要把baseURL设置为空，否则影响代理
@@ -139,9 +136,9 @@ function handleCommonParams(config: CustomAxiosRequestConfig) {
 export function handleRequestRule(config: CustomAxiosRequestConfig) {
   // 公共参数处理
   handleCommonParams(config)
-  // 请求URL处理
-  handleDomainRule(config)
   // 开发环境，请求域名代理处理
   handleDomainProxy(config)
+  // 请求URL处理
+  handleDomainRule(config)
   return config
 }

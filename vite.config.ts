@@ -18,9 +18,13 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     proxy: {
-      '/api': {
+      '/gs-api': {
         target: 'http://192.168.11.120:7001',
-        rewrite: path => path.replace(/^\/api/, '')
+        rewrite: path => path.replace(/^\/gs-api/, '')
+      },
+      '/tc-api/': {
+        target: 'http://192.168.11.120:7001',
+        rewrite: path => path.replace(/^\/tc-api/, '')
       }
     }
   },

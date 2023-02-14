@@ -17,7 +17,7 @@
 </template>
 <script setup lang="ts">
 import { defineProps } from 'vue'
-import SvgIcon from '../SvgIcon.vue'
+import SvgIcon from '../svg-icon.vue'
 import { useRouter } from 'vue-router'
 defineProps<{
   title?: string

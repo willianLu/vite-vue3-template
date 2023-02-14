@@ -61,9 +61,9 @@ export default {
 </script>
 <script setup lang="ts">
 import { onActivated, ref, onMounted } from 'vue'
-import PageContainer from '@/components/Page/PageContainer.vue'
-import PageNav from '@/components/Page/PageNav.vue'
-import SvgIcon from '@/components/SvgIcon.vue'
+import PageContainer from '@/components/page/container.vue'
+import PageNav from '@/components/page/nav.vue'
+import SvgIcon from '@/components/svg-icon.vue'
 import { useRouter } from 'vue-router'
 import { session } from '@/utils/storage'
 console.log('========标准h5初始化=========')

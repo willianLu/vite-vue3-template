@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import { showLoadingToast } from 'vant'
 import 'vant/es/toast/style'
-import LoadingOverlay from './LoadingOverlay.vue'
+import LoadingOverlay from './overlay.vue'
 import { isObject, isNumber, isString } from '@/utils/util'
 
 /**

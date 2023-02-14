@@ -36,8 +36,8 @@ export default {
 </script>
 <script setup lang="ts">
 import { ref, onActivated } from 'vue'
-import PageContainer from '@/components/Page/PageContainer.vue'
-import PageNav from '@/components/Page/PageNav.vue'
+import PageContainer from '@/components/page/container.vue'
+import PageNav from '@/components/page/nav.vue'
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
 const route = useRoute()
 const id = ref(route.query.id)

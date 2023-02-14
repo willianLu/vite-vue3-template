@@ -6,7 +6,7 @@
       class="tabbar-item flex-center"
       @click="toPage(item)"
     >
-      <div :class="{ active: route.fullPath === item.url }">
+      <div :class="{ active: route.fullPath === item.path }">
         <p>
           <SvgIcon class="tabbar-icon" :name="item.icon"></SvgIcon>
         </p>
@@ -17,7 +17,7 @@
 </template>
 <script setup lang="ts">
 import { defineProps } from 'vue'
-import SvgIcon from '../SvgIcon.vue'
+import SvgIcon from '../svg-icon.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { Tabbar } from '@/types'
 
@@ -27,8 +27,8 @@ defineProps<{
 const router = useRouter()
 const route = useRoute()
 function toPage(item: Tabbar) {
-  if (route.fullPath === item.url) return
-  router.replace(item.url)
+  if (route.fullPath === item.path) return
+  router.replace(item.path)
 }
 </script>
 <style lang="less" scoped>

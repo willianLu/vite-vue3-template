@@ -10,7 +10,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import SvgIcon from '@/components/SvgIcon.vue'
+import SvgIcon from '@/components/svg-icon.vue'
 console.log('========Icon初始化=========')
 // svg文件名集合
 const list = ref<string[]>([])

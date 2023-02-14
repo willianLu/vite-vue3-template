@@ -1,9 +1,14 @@
 import Env from '@/env'
 import merge from '@/utils/merge'
 import { ConfigType, RequiredPick } from '@/types'
+import tabBar from './tabBar'
+import proxy from './proxy'
+
+export const tabBarList = tabBar
+export const devProxy = proxy
 
 const envConfig: Record<string, ConfigType> = {}
-const modules = import.meta.glob('./*.ts', { eager: true })
+const modules = import.meta.glob('./env/*.ts', { eager: true })
 Object.keys(modules).forEach(key => {
   // eslint-disable-next-line no-useless-escape
   const res = key.match(/\.?([^\.\/]+)\.(?:[^\.]+)$/)

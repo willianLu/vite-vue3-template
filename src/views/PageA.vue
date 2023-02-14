@@ -58,8 +58,8 @@ export default {
 </script>
 <script setup lang="ts">
 import { onActivated, ref, onMounted } from 'vue'
-import PageContainer from '@/components/Page/PageContainer.vue'
-import PageNav from '@/components/Page/PageNav.vue'
+import PageContainer from '@/components/page/container.vue'
+import PageNav from '@/components/page/nav.vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 console.log('========页面A初始化=========')

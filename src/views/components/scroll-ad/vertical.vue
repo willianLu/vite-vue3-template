@@ -8,7 +8,7 @@
     <ul
       ref="box"
       :class="{
-        'scroll-ad-transition': isTransition,
+        'scroll-ad-transition': !continuous,
         'scroll-ad-box': continuous
       }"
       :style="positionStyle"
@@ -33,19 +33,19 @@ const props = withDefaults(
     list: string[] // 广告列表数据
     count?: number // 显示广告个数
     continuous?: boolean // 是否是连续的
+    speed?: number // 连续动画的滚动速度
   }>(),
   {
     list: () => [],
     count: 1,
-    continuous: false
+    continuous: false,
+    speed: 1
   }
 )
 // 显示广告列表
 const showList = ref<string[]>([])
 // 当前广告下标
 const currentIndex = ref(0)
-// 是否执行transition动画
-const isTransition = ref(false)
 // 动画盒子ref
 const box = ref<HTMLUListElement | null>(null)
 // 单个广告高度
@@ -58,7 +58,9 @@ watch(
   () => {
     if (props.list.length) {
       // 处理广告数据，复制一份，方便动画实现
-      showList.value = [...props.list, ...props.list]
+      showList.value = props.list.concat(
+        props.list.slice(0, props.continuous ? props.list.length : props.count)
+      )
       nextTick(() => {
         if (box.value) {
           // 获取单个广告高度
@@ -81,15 +83,15 @@ watch(
 // 动画盒子style样式
 const positionStyle = computed(() => {
   if (props.continuous) {
-    return `animation-duration: ${props.list.length}s;`
+    return `animation-duration: ${showList.value.length * (1 / props.speed)}s;`
   }
   const position = currentIndex.value * singleHeight.value
-  return `transform: translateY(-${position}px);`
+  const duration = currentIndex.value > 0 ? 1 : 0
+  return `transform: translateY(-${position}px);transition-duration: ${duration}s;`
 })
 // 处理执行transition动画
 async function handleExecTransition() {
   timer = setTimeout(() => {
-    isTransition.value = true
     currentIndex.value += 1
     handleTransitionEnd()
   }, 1000)
@@ -97,7 +99,6 @@ async function handleExecTransition() {
 // 执行transition动画结束
 async function handleTransitionEnd() {
   timer = setTimeout(() => {
-    isTransition.value = false
     if (currentIndex.value === props.list.length) {
       currentIndex.value = 0
     }

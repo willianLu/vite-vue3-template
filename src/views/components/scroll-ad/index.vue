@@ -4,8 +4,8 @@
 </template>
 <script setup lang="ts">
 import { defineProps, withDefaults } from 'vue'
-import VerticalAd from './Vertical.vue'
-import HorizontalAd from './Horizontal.vue'
+import VerticalAd from './vertical.vue'
+import HorizontalAd from './horizontal.vue'
 
 withDefaults(
   defineProps<{

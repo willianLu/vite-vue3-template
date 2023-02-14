@@ -6,5 +6,5 @@ export type RequiredPick<T, K extends keyof T> = {
 export interface Tabbar {
   title: string
   icon: string
-  url: string
+  path: string
 }

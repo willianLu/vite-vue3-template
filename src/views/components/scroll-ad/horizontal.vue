@@ -20,7 +20,7 @@
 </template>
 <script setup lang="ts">
 import { defineProps, withDefaults, watch, nextTick, ref, computed } from 'vue'
-import SvgIcon from '@/components/SvgIcon.vue'
+import SvgIcon from '@/components/svg-icon.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -48,7 +48,7 @@ watch(
           const cw = container.value.offsetWidth
           const bw = box.value.offsetWidth
           if (bw > cw) {
-            duration.value = Math.floor((bw / 36) * props.speed)
+            duration.value = Math.floor((bw / 36) * (1 / props.speed))
           }
         }
       })

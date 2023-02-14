@@ -12,10 +12,10 @@ export default {
 }
 </script>
 <script setup lang="ts">
-import PageContainer from '@/components/Page/PageContainer.vue'
-import PageTabbar from '@/components/Page/PageTabbar.vue'
-import Config from '@/config'
+import PageContainer from '@/components/page/container.vue'
+import PageTabbar from '@/components/page/tabbar.vue'
+import { tabBarList } from '@/config'
 console.log('========个人中心初始化=========')
-const tabs = Config.tabs as any
+const tabs = tabBarList
 </script>
 <style lang="less" scoped></style>
