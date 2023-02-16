@@ -1,6 +1,8 @@
 export interface ConfigType {
   baseUrl?: string
   domain?: Record<string, string>
-  commonParams?: Record<string, any>
-  domainParams?: Record<string, Record<any, any> | (() => Record<any, any>)>
 }
+
+export type CommonParams = Record<string, any> | (() => Record<string, any>)
+
+export type DomainParams = Record<string, CommonParams>

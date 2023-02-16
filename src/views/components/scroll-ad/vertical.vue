@@ -64,9 +64,7 @@ watch(
       nextTick(() => {
         if (box.value) {
           // 获取单个广告高度
-          singleHeight.value = (
-            box.value.children[0] as HTMLLIElement
-          ).offsetHeight
+          getSingleHeight()
           // 非持续的动画，执行transition动画
           // transition动画为单个广告动画，单个执行完成时，停顿1s再执行第二个广告动画
           if (!props.continuous) {
@@ -89,6 +87,12 @@ const positionStyle = computed(() => {
   const duration = currentIndex.value > 0 ? 1 : 0
   return `transform: translateY(-${position}px);transition-duration: ${duration}s;`
 })
+// 获取单个广告高度
+function getSingleHeight() {
+  if (box.value) {
+    singleHeight.value = (box.value.children[0] as HTMLLIElement).offsetHeight
+  }
+}
 // 处理执行transition动画
 async function handleExecTransition() {
   timer = setTimeout(() => {
@@ -96,6 +100,7 @@ async function handleExecTransition() {
     handleTransitionEnd()
   }, 1000)
 }
+
 // 执行transition动画结束
 async function handleTransitionEnd() {
   timer = setTimeout(() => {
@@ -105,10 +110,12 @@ async function handleTransitionEnd() {
     handleExecTransition()
   }, 1000)
 }
+window.addEventListener('resize', getSingleHeight)
 onUnmounted(() => {
   if (timer) {
     clearTimeout(timer)
   }
+  window.removeEventListener('resize', getSingleHeight)
 })
 </script>
 <style lang="less" scoped>

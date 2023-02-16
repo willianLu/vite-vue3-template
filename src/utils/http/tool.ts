@@ -1,6 +1,13 @@
+import { AxiosResponse } from 'axios'
 import { CustomAxiosRequestConfig } from '@/types'
 import { isObject, isFunction, stringifyQuery } from '@/utils/util'
-import Config, { devProxy } from '@/config'
+import Config, {
+  devProxy,
+  commonParams,
+  domainParams,
+  commonResponse,
+  domainResponse
+} from '@/config'
 import Env from '@/env'
 
 /**
@@ -40,6 +47,7 @@ function handleDomainRule(config: CustomAxiosRequestConfig) {
       // 使用indexOf判断，访问域名与配置一致，减少处理逻辑
       if (url.indexOf(key) === 0) {
         const _url = url.replace(key, domain[key])
+        config.originDomain = key
         if (hasDomain) {
           config.url = _url
         } else {
@@ -67,6 +75,8 @@ function handleDomainProxy(config: CustomAxiosRequestConfig) {
       // 使用indexOf判断，预订域名与配置一致，减少处理逻辑
       if (domain.indexOf(key) === 0) {
         const _url = domain.replace(key, devProxy[key])
+        // 记录原始域名，用于返回处理
+        config.originDomain = key
         if (hasDomain) {
           config.url = _url
           // url中包含域名时，需要把baseURL设置为空，否则影响代理
@@ -100,8 +110,7 @@ function handleCommonParams(config: CustomAxiosRequestConfig) {
   if (!skipCommonData && (isObject(_data) || _data === undefined)) {
     const url = config.url || ''
     // 获取公共参数，不区分域名
-    let commonParams = Config.commonParams || {}
-    const { domainParams } = Config
+    let comParams = commonParams || {}
     const hasDomain = isIncludeDomain(url)
     // 若存在域名参数单独处理
     if (domainParams && (hasDomain || baseURL)) {
@@ -111,12 +120,12 @@ function handleCommonParams(config: CustomAxiosRequestConfig) {
         if ((<string>domain).indexOf(item) === 0) {
           const fun = domainParams[item]
           const _params = isFunction(fun) ? fun() : domainParams[item]
-          commonParams = { ...commonParams, ..._params }
+          comParams = { ...comParams, ..._params }
           return true
         }
       })
     }
-    _data = { ...commonParams, ..._data }
+    _data = { ...comParams, ..._data }
   }
   // formData数据，特殊处理
   _data = isFormData ? stringifyQuery(_data) : _data
@@ -141,4 +150,20 @@ export function handleRequestRule(config: CustomAxiosRequestConfig) {
   // 请求URL处理
   handleDomainRule(config)
   return config
+}
+
+export function handleResponseRule<T, D>(response: AxiosResponse<T, D>) {
+  commonResponse && commonResponse(response)
+  const { config } = response
+  const originDomain = (<any>config).originDomain
+  if (originDomain && domainResponse) {
+    Object.keys(domainResponse).some(key => {
+      if (key === originDomain) {
+        const fun = domainResponse[key]
+        fun && fun(response)
+        return true
+      }
+    })
+  }
+  return response
 }

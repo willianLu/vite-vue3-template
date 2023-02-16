@@ -58,20 +58,25 @@ export default {
 <script setup lang="ts">
 import { onMounted, ref, onActivated } from 'vue'
 import SvgIcon from '@/components/svg-icon.vue'
-import { queryUserInfo, queryImgCode, queryList } from '@/api/user'
+import {
+  queryUserInfo,
+  queryImgCode,
+  queryList,
+  queryTcUserInfo
+} from '@/api/user'
 import PageContainer from '@/components/page/container.vue'
 import PageTabbar from '@/components/page/tabbar.vue'
 // import Loading from '@/components/loading/index'
 import PopupCenter from '@/components/popup/center.vue'
 import PopupBottom from '@/components/popup/bottom.vue'
 import { useRouter } from 'vue-router'
-import { tabBarList } from '@/config'
+import { tabBar } from '@/config'
 import ScrollAd from './components/scroll-ad/index.vue'
 
 const isShow = ref(false)
 const showCenter = ref(false)
 const router = useRouter()
-const tabs = tabBarList
+const tabs = tabBar
 console.log('========首页初始化=========')
 const shopList = ref(['宝宝巴士', '孙悟空', '毛笔字', '好看的电影'])
 const adList = ref([
@@ -82,7 +87,7 @@ const adList = ref([
 ])
 
 onMounted(async () => {
-  // getData()
+  getData()
   console.log('==========首页onMounted')
 })
 onActivated(() => {
@@ -95,6 +100,8 @@ async function getData() {
   console.log(imgRes, '=========图片数据')
   const [listRes] = await queryList()
   console.log(listRes, '=========列表数据')
+  const [tcRes] = await queryTcUserInfo()
+  console.log(tcRes, '=========tc用户数据')
 }
 function handleClick() {
   // getData()

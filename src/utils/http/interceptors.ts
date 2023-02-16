@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { handleRequestRule } from './tool'
+import { handleRequestRule, handleResponseRule } from './tool'
 import { CustomAxiosRequestConfig } from '@/types'
 
 // 发出请求前拦截
@@ -33,8 +33,7 @@ const response = {
    * @returns {AxiosResponse} 返回response对象
    */
   onFufilled<T, D>(response: AxiosResponse<T, D>): AxiosResponse<T, D> {
-    console.log(response, '========返回拦截器')
-    return response
+    return handleResponseRule<T, D>(response)
   },
   /**
    * @description 请求返回错误拦截

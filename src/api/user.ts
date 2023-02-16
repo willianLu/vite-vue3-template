@@ -8,7 +8,9 @@ interface UserInfo {
   sex: number
 }
 export function queryUserInfo() {
-  return get<UserInfo, unknown, unknown, 'origin'>('/user/info')
+  return get<UserInfo, unknown, unknown, 'origin'>(
+    'https://www.prod.gs.com/user/info'
+  )
 }
 
 export function queryImgCode() {
@@ -22,7 +24,7 @@ export function queryImgCode() {
 }
 
 export function queryTcUserInfo() {
-  return get('/user/info')
+  return get('https://www.prod.tc.com/user/info')
 }
 
 export function queryList() {

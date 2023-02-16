@@ -1,5 +1,5 @@
 import { Tabbar } from '@/types'
-const tabbar: Tabbar[] = [
+export const tabBar: Tabbar[] = [
   {
     title: '首页',
     icon: 'home',
@@ -11,4 +11,3 @@ const tabbar: Tabbar[] = [
     path: '/my'
   }
 ]
-export default tabbar
