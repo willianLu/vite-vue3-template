@@ -27,6 +27,7 @@ import {
   computed,
   onUnmounted
 } from 'vue'
+import userResize from '@/hooks/resize'
 
 const props = withDefaults(
   defineProps<{
@@ -52,6 +53,7 @@ const box = ref<HTMLUListElement | null>(null)
 const singleHeight = ref(0)
 // 执行动画的timeout对象ID
 let timer: ReturnType<typeof setTimeout> | null = null
+const sysRect = userResize()
 // 监听广告列表数据
 watch(
   props.list,
@@ -78,6 +80,10 @@ watch(
     immediate: true
   }
 )
+// 监听页面大小变化
+watch(sysRect, () => {
+  getSingleHeight()
+})
 // 动画盒子style样式
 const positionStyle = computed(() => {
   if (props.continuous) {
@@ -110,12 +116,10 @@ async function handleTransitionEnd() {
     handleExecTransition()
   }, 1000)
 }
-window.addEventListener('resize', getSingleHeight)
 onUnmounted(() => {
   if (timer) {
     clearTimeout(timer)
   }
-  window.removeEventListener('resize', getSingleHeight)
 })
 </script>
 <style lang="less" scoped>
