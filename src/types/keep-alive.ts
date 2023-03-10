@@ -7,6 +7,7 @@ export type PageAliveRoute = {
   fullPath: string
   name: string
   position: number
+  pageId: number
 }
 export interface StorageOptions {
   maxAge?: number | string

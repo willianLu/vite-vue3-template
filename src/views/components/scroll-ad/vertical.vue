@@ -12,6 +12,7 @@
         'scroll-ad-box': continuous
       }"
       :style="positionStyle"
+      @transitionend="handleTransitionEnd"
     >
       <li v-for="(item, index) in showList" :key="index">{{ item }}</li>
     </ul>
@@ -25,9 +26,10 @@ import {
   nextTick,
   ref,
   computed,
-  onUnmounted
+  onUnmounted,
+  onActivated
 } from 'vue'
-import userResize from '@/hooks/resize'
+import { useWindowSize } from '@vant/use'
 
 const props = withDefaults(
   defineProps<{
@@ -53,7 +55,9 @@ const box = ref<HTMLUListElement | null>(null)
 const singleHeight = ref(0)
 // 执行动画的timeout对象ID
 let timer: ReturnType<typeof setTimeout> | null = null
-const sysRect = userResize()
+const rect = useWindowSize()
+// 首次初始激活页面
+let isInitActivated = false
 // 监听广告列表数据
 watch(
   props.list,
@@ -81,7 +85,7 @@ watch(
   }
 )
 // 监听页面大小变化
-watch(sysRect, () => {
+watch(rect.width, () => {
   getSingleHeight()
 })
 // 动画盒子style样式
@@ -102,24 +106,32 @@ function getSingleHeight() {
 // 处理执行transition动画
 async function handleExecTransition() {
   timer = setTimeout(() => {
+    timer = null
     currentIndex.value += 1
-    handleTransitionEnd()
   }, 1000)
 }
 
 // 执行transition动画结束
 async function handleTransitionEnd() {
-  timer = setTimeout(() => {
-    if (currentIndex.value === props.list.length) {
-      currentIndex.value = 0
-    }
-    handleExecTransition()
-  }, 1000)
-}
-onUnmounted(() => {
-  if (timer) {
-    clearTimeout(timer)
+  if (timer) clearTimeout(timer)
+  if (currentIndex.value === props.list.length) {
+    currentIndex.value = 0
   }
+  handleExecTransition()
+}
+onActivated(() => {
+  // 若已经初始化过激活生命周期，则执行动画结束处理
+  if (isInitActivated) {
+    console.log('======bug检测=======')
+    // 页面失活状态下，无法监听动画结束
+    // 页面激活时，处理动画结束
+    handleTransitionEnd()
+  } else {
+    isInitActivated = true
+  }
+})
+onUnmounted(() => {
+  if (timer) clearTimeout(timer)
 })
 </script>
 <style lang="less" scoped>

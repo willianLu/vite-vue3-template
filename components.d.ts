@@ -8,8 +8,10 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Bottom: typeof import('./src/components/popup/bottom.vue')['default']
+    BottomScroll: typeof import('./src/components/popup/bottomScroll.vue')['default']
     Center: typeof import('./src/components/popup/center.vue')['default']
     Container: typeof import('./src/components/page/container.vue')['default']
+    copy: typeof import('./src/components/popup/bottom copy.vue')['default']
     LoadingOverlay: typeof import('./src/components/Loading/LoadingOverlay.vue')['default']
     Nav: typeof import('./src/components/page/nav.vue')['default']
     Overlay: typeof import('./src/components/loading/overlay.vue')['default']
@@ -26,6 +28,7 @@ declare module '@vue/runtime-core' {
     ScrollAd: typeof import('./src/components/ScrollAd/index.vue')['default']
     SvgIcon: typeof import('./src/components/svg-icon.vue')['default']
     Tabbar: typeof import('./src/components/page/tabbar.vue')['default']
+    VanBotton: typeof import('vant/es')['Botton']
     VanButton: typeof import('vant/es')['Button']
     VanCheckbox: typeof import('vant/es')['Checkbox']
     VanField: typeof import('vant/es')['Field']

@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { defineProps, withDefaults, watch, nextTick, ref, computed } from 'vue'
 import SvgIcon from '@/components/svg-icon.vue'
-import userResize from '@/hooks/resize'
+import { useWindowSize } from '@vant/use'
 
 const props = withDefaults(
   defineProps<{
@@ -40,16 +40,16 @@ const duration = ref(0)
 const boxStyle = computed(() => {
   return `animation-duration: ${duration.value}s;`
 })
-const rect = userResize()
+const rect = useWindowSize()
 watch(
-  rect,
+  rect.width,
   () => {
     nextTick(() => {
       if (container.value && box.value) {
         const cw = container.value.offsetWidth
         const bw = box.value.offsetWidth
         if (bw > cw) {
-          const distance = rect.value.width / 10
+          const distance = rect.width.value / 10
           duration.value = Math.floor((bw / distance) * (1 / props.speed))
         }
       }

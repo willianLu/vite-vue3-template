@@ -7,6 +7,7 @@
     "dev": "cross-env NODE_ENV=develpoment vite",
     "build": "cross-env NODE_ENV=production vue-tsc --noEmit && vite build",
     "preview": "vite preview",
+    "docs:dev": "vitepress dev docs --port=3068",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -47,6 +48,7 @@
     "vite-plugin-compression2": "^0.1.0",
     "vite-plugin-pwa": "^0.13.1",
     "vite-svg-loader": "^3.6.0",
+    "vitepress": "^1.0.0-alpha.46",
     "vue-tsc": "^0.40.4"
   },
   "nano-staged": {

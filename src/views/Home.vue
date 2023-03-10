@@ -7,46 +7,23 @@
     <div class="ad-box">
       <ScrollAd class="ad-wrap" :list="adList" enable-x />
     </div>
-    <div class="ad-box">
-      <ScrollAd class="ad-wrap" :list="adList" :count="2" continuous />
-    </div>
-    <div class="margin-32">
-      <a href="http://localhost:5173/#/icons" style="margin-right: 16px"
-        >icon链接跳转</a
+    <div class="fc-title">站内导航</div>
+    <ul class="fc-home-nav">
+      <li
+        v-for="(item, index) in navList"
+        :key="index"
+        class="flex-v-center"
+        :class="{ 'hairline-border-top': index !== 0 }"
+        @click="toPage(item.path)"
       >
-      <a href="http://localhost:6800">本地页面</a>
-    </div>
-    <div class="margin-32">
-      <van-button size="small" @click="toPage('normal-h5')">
-        常规h5页面
-      </van-button>
-      <van-button size="small" @click="toPage('special-h5')">
-        特殊h5页面
-      </van-button>
-      <van-button size="small" @click="toPage('icons')">Icon页面</van-button>
-      <van-button size="small" @click="toGo(1)">向前一步</van-button>
-      <van-button size="small" @click="toGo(2)">向前多步</van-button>
-    </div>
-    <div class="margin-32">
-      <van-button
-        :loading="isShow"
-        type="success"
-        loading-text="查看"
-        @click="handleClick"
-        >查看</van-button
-      >
-    </div>
-
-    <PopupCenter v-model:show="showCenter" title="请选择高考科目">
-      <div v-for="item in 10" :key="item">内容</div>
-    </PopupCenter>
-    <PopupBottom v-model:show="isShow">
-      <div style="padding-bottom: 32px">我是头部</div>
-      <div v-for="item in 100" :key="item">内容</div>
-      <div style="padding-bottom: 32px">我是底部</div>
-    </PopupBottom>
+        <SvgIcon :name="item.icon" />
+        <div>
+          <span>{{ item.name }}</span> {{ item.desc }}
+        </div>
+      </li>
+    </ul>
     <template #footer>
-      <PageTabbar :tabs="tabs" />
+      <PageTabbar :tabs="tabBar" />
     </template>
   </PageContainer>
 </template>
@@ -66,17 +43,11 @@ import {
 } from '@/api/user'
 import PageContainer from '@/components/page/container.vue'
 import PageTabbar from '@/components/page/tabbar.vue'
-// import Loading from '@/components/loading/index'
-import PopupCenter from '@/components/popup/center.vue'
-import PopupBottom from '@/components/popup/bottom.vue'
 import { useRouter } from 'vue-router'
 import { tabBar } from '@/config'
 import ScrollAd from './components/scroll-ad/index.vue'
 
-const isShow = ref(false)
-const showCenter = ref(false)
 const router = useRouter()
-const tabs = tabBar
 console.log('========首页初始化=========')
 const shopList = ref(['宝宝巴士', '孙悟空', '毛笔字', '好看的电影'])
 const adList = ref([
@@ -85,10 +56,29 @@ const adList = ref([
   '3.表格中的数字注明了完全支持该属性的首个浏览器版本。',
   '4.规定完成动画所花费的时间，以秒或毫秒计！'
 ])
+const navList = [
+  {
+    name: 'Svg Icon',
+    icon: 'icon',
+    desc: '使用svg构建站点图标库',
+    path: '/icons'
+  },
+  {
+    name: 'FreeGPT',
+    icon: 'robot',
+    desc: '基于chatGPT的智能AI工具',
+    path: '/freegpt'
+  },
+  {
+    name: '弹窗',
+    icon: 'popup',
+    desc: '弹窗组件展示（基于vant）',
+    path: '/component/popup'
+  }
+]
 
 onMounted(async () => {
-  getData()
-  console.log('==========首页onMounted')
+  // getData()
 })
 onActivated(() => {
   console.log('==========首页激活==========')
@@ -103,20 +93,9 @@ async function getData() {
   const [tcRes] = await queryTcUserInfo()
   console.log(tcRes, '=========tc用户数据')
 }
-function handleClick() {
-  // getData()
-  isShow.value = !isShow.value
-  // if (isShow.value) {
-  //   setTimeout(() => {
-  //     isShow.value = false
-  //   }, 2000)
-  // }
-}
+
 function toPage(path: string) {
-  router.push(`/${path}`)
-}
-function toGo(delta: number) {
-  router.go(delta)
+  router.push(path)
 }
 </script>
 <style lang="less" scoped>
@@ -131,21 +110,45 @@ function toGo(delta: number) {
 .home-search-icon {
   flex-shrink: 0;
   margin-right: 8px;
-  color: #ee5353;
+  color: #333;
 }
 .home-search-input {
   flex: 1;
   line-height: 44px;
 }
 .ad-box {
-  margin: 0 32px 32px;
+  margin: 0 32px;
   padding: 12px 24px;
   background-color: #fff;
   .ad-wrap {
     color: #ee5353;
   }
 }
-.margin-32 {
-  margin: 0 32px 32px;
+.fc-title {
+  margin: 32px 32px 16px;
+  font-size: 36px;
+  font-weight: bold;
+}
+.fc-home-nav {
+  margin: 0 32px;
+  li {
+    display: flex;
+    padding: 0 12px;
+    height: 72px;
+    background-color: #fff;
+    font-size: 32px;
+    color: #1296db;
+    cursor: pointer;
+    div {
+      flex: 1;
+      word-break: break-all;
+      margin-left: 12px;
+      font-size: 26px;
+      color: #777;
+      span {
+        color: #ee5353;
+      }
+    }
+  }
 }
 </style>

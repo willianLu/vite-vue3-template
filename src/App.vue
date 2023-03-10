@@ -1,7 +1,7 @@
 <template>
-  <RouterView v-slot="{ Component }">
+  <RouterView v-slot="{ Component, route }">
     <KeepAlive :include="pageAliveStore.names">
-      <component :is="Component"></component>
+      <component :is="Component" :key="route.meta.pageId"></component>
     </KeepAlive>
   </RouterView>
 </template>
@@ -13,5 +13,6 @@ const pageAliveStore = usePageAliveStore()
 #app {
   width: 100%;
   height: 100%;
+  overflow-y: auto;
 }
 </style>

@@ -129,3 +129,20 @@ export function stringifyQuery(data: Record<string | number | symbol, any>) {
     })
     .join('&')
 }
+
+/**
+ * @description px 转换为 vw单位
+ * @param {string | number} count 需要转换的数量
+ * @param {number} viewportWidth 参考设计稿宽度
+ * @returns {string} 转换后的vw数值
+ */
+export function pxToVw(count: string | number, viewportWidth?: number) {
+  viewportWidth = isNumber(viewportWidth) ? viewportWidth : 750
+  if (isString(count) && count.endsWith('px')) {
+    count = count.slice(0, count.length - 2)
+  }
+  if (/^\d+$/.test(`${count}`)) {
+    return ((Number(count) / viewportWidth) * 100).toFixed(6) + 'vw'
+  }
+  return count
+}

@@ -1,12 +1,14 @@
 import { RouteLocationNormalized } from 'vue-router'
 import usePageAliveStore from '@/store/page-alive'
 import { PageAliveRoute } from '@/types'
-
+let pageId = 0
 // 处理页面缓存
 export function handlePageAlive(
   to: RouteLocationNormalized,
   from: RouteLocationNormalized
 ) {
+  // 每次路由变化就增加
+  pageId++
   const pageAliveStore = usePageAliveStore()
   const { action, names } = pageAliveStore
   let { current, routes = [] } = pageAliveStore.getPageAlive()
@@ -26,7 +28,8 @@ export function handlePageAlive(
   current = {
     fullPath: to.fullPath,
     name: to.name as string,
-    position: history.state.position
+    position: history.state.position,
+    pageId
   }
   if (action) {
     // vue-route 路由方法跳转
@@ -138,6 +141,11 @@ export function handlePageAlive(
       names.push(to.name as string)
     }
   }
+  // 没有路由的情况，属于特殊情况；例：浏览器强制退出，重新打开，存在路由堆栈，但是没有session缓存
+  if (!routes[current.position]) {
+    routes[current.position] = current
+  }
+  to.meta.pageId = (routes[current.position] as PageAliveRoute).pageId
   pageAliveStore.setPageAlive(current, names, routes)
 }
 // 当前路由前面的路由堆栈是否存在相同的路由
