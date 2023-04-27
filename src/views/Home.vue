@@ -12,13 +12,20 @@
       <li
         v-for="(item, index) in navList"
         :key="index"
-        class="flex-v-center"
-        :class="{ 'hairline-border-top': index !== 0 }"
+        class="nav-item flex"
         @click="toPage(item.path)"
       >
-        <SvgIcon :name="item.icon" />
+        <SvgIcon :name="item.icon || 'smile'"></SvgIcon>
         <div>
-          <span>{{ item.name }}</span> {{ item.desc }}
+          <p>{{ item.title }}</p>
+          <p v-if="item.children" class="nav-child">
+            <span
+              v-for="child in item.children"
+              :key="child.path"
+              @click.stop="toPage(child.path)"
+              >{{ child.title }}</span
+            >
+          </p>
         </div>
       </li>
     </ul>
@@ -48,7 +55,6 @@ import { tabBar } from '@/config'
 import ScrollAd from './components/scroll-ad/index.vue'
 
 const router = useRouter()
-console.log('========首页初始化=========')
 const shopList = ref(['宝宝巴士', '孙悟空', '毛笔字', '好看的电影'])
 const adList = ref([
   '1.规划师二维码修改为公众号二维码!',
@@ -60,20 +66,50 @@ const navList = [
   {
     name: 'Svg Icon',
     icon: 'icon',
-    desc: '使用svg构建站点图标库',
+    title: '使用svg构建站点图标库',
     path: '/icons'
   },
   {
     name: 'FreeGPT',
     icon: 'robot',
-    desc: '基于chatGPT的智能AI工具',
+    title: '基于chatGPT的智能AI工具',
     path: '/freegpt'
+  },
+  {
+    title: '骨架屏',
+    path: '/skeleton'
   },
   {
     name: '弹窗',
     icon: 'popup',
-    desc: '弹窗组件展示（基于vant）',
+    title: '弹窗组件展示（基于vant）',
     path: '/component/popup'
+  },
+  {
+    title: 'H5全屏背景',
+    icon: 'screen',
+    children: [
+      {
+        title: '常规',
+        path: '/full-screen'
+      },
+      {
+        title: '底部吸顶(无头部)',
+        path: '/full-screen/footer'
+      },
+      {
+        title: '底部吸顶(实体)',
+        path: '/full-screen/entity'
+      },
+      {
+        title: '底部吸顶(虚体)',
+        path: '/full-screen/virtual'
+      }
+    ]
+  },
+  {
+    title: '搜索页',
+    path: '/search'
   }
 ]
 
@@ -94,7 +130,8 @@ async function getData() {
   console.log(tcRes, '=========tc用户数据')
 }
 
-function toPage(path: string) {
+function toPage(path?: string) {
+  if (!path) return
   router.push(path)
 }
 </script>
@@ -110,6 +147,7 @@ function toPage(path: string) {
 .home-search-icon {
   flex-shrink: 0;
   margin-right: 8px;
+  font-size: 32px;
   color: #333;
 }
 .home-search-input {
@@ -131,24 +169,30 @@ function toPage(path: string) {
 }
 .fc-home-nav {
   margin: 0 32px;
-  li {
-    display: flex;
-    padding: 0 12px;
-    height: 72px;
-    background-color: #fff;
-    font-size: 32px;
-    color: #1296db;
-    cursor: pointer;
-    div {
-      flex: 1;
-      word-break: break-all;
-      margin-left: 12px;
-      font-size: 26px;
-      color: #777;
-      span {
-        color: #ee5353;
-      }
-    }
+}
+.nav-item {
+  padding: 24px;
+  line-height: 36px;
+  font-size: 26px;
+  background-color: #fff;
+
+  svg {
+    margin-right: 12px;
+    font-size: 36px;
+    color: #ee5353;
+  }
+}
+
+.nav-child {
+  span {
+    margin: 12px 16px 0 0;
+    display: inline-block;
+    padding: 0 24px;
+    height: 50px;
+    line-height: 50px;
+    border: 1px solid #eee;
+    border-radius: 25px;
+    color: #333;
   }
 }
 </style>

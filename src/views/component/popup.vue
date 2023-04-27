@@ -6,12 +6,12 @@
     <div>
       <van-button @click="isShowBottom = true">底部弹窗</van-button>
     </div>
-    <PopupBottom v-model:show="isShowBottom">
-      <div class="item" style="margin: 8px 0">👍 👎 👊 ✊ 🤛</div>
-      <div v-for="item in 100" :key="item" class="item">😀 😁 😂 🤣 😃</div>
-      <div class="item" style="margin: 8px 0">👍 👎 👊 ✊ 🤛</div>
-    </PopupBottom>
   </PageContainer>
+  <PopupBottom v-model:show="isShowBottom">
+    <div class="item" style="margin: 8px 0">👍 👎 👊 ✊ 🤛</div>
+    <div v-for="item in 100" :key="item" class="item">😀 😁 😂 🤣 😃</div>
+    <div class="item" style="margin: 8px 0">👍 👎 👊 ✊ 🤛</div>
+  </PopupBottom>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'

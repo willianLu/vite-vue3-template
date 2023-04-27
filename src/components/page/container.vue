@@ -17,24 +17,15 @@
     </footer>
   </main>
 </template>
-<script setup lang="ts">
+<script setup>
 import { defineProps, defineEmits, ref, computed, useSlots } from 'vue'
-import { pxToVw } from '@/utils/util'
+import { pxToRem } from '@/utils/util'
 const slots = useSlots()
 const props = defineProps({
   fullscreen: Boolean,
-  headerClass: {
-    type: String,
-    default: ''
-  },
-  footerClass: {
-    type: String,
-    default: ''
-  },
-  contentClass: {
-    type: String,
-    default: ''
-  },
+  headerClass: String,
+  footerClass: String,
+  contentClass: String,
   headerHeight: {
     type: Number,
     default: 88
@@ -44,6 +35,7 @@ const props = defineProps({
     default: 0
   }
 })
+const emits = defineEmits(['scroll'])
 const isSticky = ref(false)
 const contentStyle = computed(() => {
   let str = ''
@@ -64,12 +56,12 @@ const headerClassName = computed(() => {
   }
   return str
 })
-function getFullStyle(num: string | number, type: 'top' | 'bottom') {
+function getFullStyle(num, type) {
   let str = ''
   const p = `padding-${type}`
   const m = `margin-${type}`
   const s = `safe-area-inset-${type}`
-  const val = pxToVw(num)
+  const val = pxToRem(num)
   str += `${p}:${val};`
   str += `${p}:calc(${val} + constant(${s}));`
   str += `${p}:calc(${val} + env(${s}));`
@@ -78,11 +70,12 @@ function getFullStyle(num: string | number, type: 'top' | 'bottom') {
   str += `${m}:calc(-${val} - env(${s}));`
   return str
 }
-function handleScroll(event: any) {
+function handleScroll(event) {
   if (props.fullscreen && props.headerHeight) {
     isSticky.value =
       event.target.scrollTop > (props.headerHeight / 750) * window.innerWidth
   }
+  emits('scroll', event)
 }
 </script>
 <style lang="less" scoped>
@@ -127,7 +120,7 @@ function handleScroll(event: any) {
 .custom-page-header {
   background-color: transparent;
   border-color: transparent;
-  /deep/ .custom-nav {
+  :deep(.custom-nav) {
     .title,
     .back {
       color: #fff;

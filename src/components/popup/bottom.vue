@@ -4,6 +4,7 @@
     round
     :style="popupStyle"
     @open="handlePopupOpen"
+    @clickOverlay="handleClickOverlay"
   >
     <section
       ref="container"
@@ -13,23 +14,40 @@
       @touchcancel="handleTouchEnd"
     >
       <div class="popup-bar" :class="{ untouch: !isSupporTouch }"></div>
-      <h1 class="popup-bottom-title">底部弹窗</h1>
+      <h1 class="popup-bottom-title">{{ title }}</h1>
       <div ref="content" class="popup-scroll-container">
         <slot></slot>
       </div>
     </section>
   </van-popup>
 </template>
-<script setup lang="ts">
-import { reactive, ref, computed, unref, defineEmits, nextTick } from 'vue'
+<script setup>
+import {
+  reactive,
+  ref,
+  computed,
+  unref,
+  defineEmits,
+  defineProps,
+  nextTick
+} from 'vue'
 // 是否支持滑动
 const isSupporTouch =
   'ontouchstart' in window ||
-  ((window as any).DocumentTouch &&
-    document instanceof (window as any).DocumentTouch)
+  (window.DocumentTouch && document instanceof window.DocumentTouch)
+const props = defineProps({
+  title: {
+    type: String,
+    default: ''
+  },
+  closeOnClickOverlay: {
+    type: Boolean,
+    default: true
+  }
+})
 const emits = defineEmits(['update:show'])
-const container = ref<HTMLDivElement>()
-const content = ref<HTMLDivElement>()
+const container = ref()
+const content = ref()
 const refer = reactive({
   y: 0,
   contentScrollTop: 0,
@@ -45,20 +63,20 @@ const popupStyle = computed(() => {
 })
 
 // 样式值公共方法
-function transformStyle(top: number, end: boolean) {
+function transformStyle(top, end) {
   return `transform: translateX(0px) translateY(${top}px) translateZ(1px); transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1); transition-property: transform; transition-duration: ${
     end ? 300 : 0
   }ms;`
 }
-function handleTouchStart(event: TouchEvent) {
+function handleTouchStart(event) {
   // 不支持touch时return，与页面设置保持统一
   if (!isSupporTouch) return
   refer.y = event.touches[0].pageY
-  refer.isContent = judgeScrollBox(event.target as Element)
-  refer.contentScrollTop = content.value?.scrollTop || 0
+  refer.isContent = judgeScrollBox(event.target)
+  refer.contentScrollTop = content.value.scrollTop
   refer.direction = ''
 }
-function handleTouchMove(event: TouchEvent) {
+function handleTouchMove(event) {
   // 不支持touch时return，与页面设置保持统一
   if (!isSupporTouch) return
   const y = event.touches[0].pageY
@@ -71,7 +89,7 @@ function handleTouchMove(event: TouchEvent) {
   const isScroll =
     !refer.isContent ||
     (refer.contentScrollTop === 0 &&
-      content.value?.scrollTop === 0 &&
+      content.value.scrollTop === 0 &&
       refer.direction === 'down')
   if (isScroll) {
     refer.top = distance < 0 ? 0 : distance
@@ -92,9 +110,15 @@ function handleTouchEnd() {
   refer.isEnd = true
 }
 // 判断是否在滑动内容内
-function judgeScrollBox(target: Element) {
+function judgeScrollBox(target) {
   const element = unref(content)
   return !!(element && element.contains(target))
+}
+// 点击黑色蒙层
+function handleClickOverlay() {
+  if (props.closeOnClickOverlay) {
+    handlePopupClose()
+  }
 }
 // 关闭弹窗
 function handlePopupClose() {

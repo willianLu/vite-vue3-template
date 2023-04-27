@@ -2,7 +2,7 @@
   <nav class="page-nav">
     <div class="left flex-v-center">
       <SvgIcon
-        v-if="!closeBack"
+        v-if="!isCoseBack"
         class="back"
         name="left"
         @click="goBack"
@@ -16,14 +16,20 @@
   </nav>
 </template>
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { defineProps, computed } from 'vue'
 import SvgIcon from '../svg-icon.vue'
 import { useRouter } from 'vue-router'
-defineProps<{
+import { isDef } from '@/utils/util'
+const props = defineProps<{
   title?: string
   closeBack?: boolean
 }>()
 const router = useRouter()
+const isCoseBack = computed(() => {
+  if (props.closeBack) return true
+  const { state } = window.history
+  return !(state && isDef(state.back))
+})
 function goBack() {
   router.back()
 }

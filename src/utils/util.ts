@@ -106,10 +106,7 @@ export function isEmptyObject(data: unknown): data is object {
  * @param {unknown} data
  * @returns {promise<T | undefined>}
  */
-export function deferFun<T>(
-  duration?: number,
-  data?: T
-): Promise<T | undefined> {
+export function delay<T>(duration?: number, data?: T): Promise<T | undefined> {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve(data)
@@ -136,13 +133,13 @@ export function stringifyQuery(data: Record<string | number | symbol, any>) {
  * @param {number} viewportWidth 参考设计稿宽度
  * @returns {string} 转换后的vw数值
  */
-export function pxToVw(count: string | number, viewportWidth?: number) {
-  viewportWidth = isNumber(viewportWidth) ? viewportWidth : 750
+export function pxToRem(count: string | number, viewportWidth?: number) {
+  viewportWidth = isNumber(viewportWidth) ? viewportWidth : 75
   if (isString(count) && count.endsWith('px')) {
     count = count.slice(0, count.length - 2)
   }
   if (/^\d+$/.test(`${count}`)) {
-    return ((Number(count) / viewportWidth) * 100).toFixed(6) + 'vw'
+    return (Number(count) / viewportWidth).toFixed(6) + 'rem'
   }
   return count
 }

@@ -8,8 +8,6 @@ import { compression } from 'vite-plugin-compression2'
 // vant 按需加载
 import Components from 'unplugin-vue-components/vite'
 import { VantResolver } from 'unplugin-vue-components/resolvers'
-// 样式单位转换
-import pxtovw from 'postcss-px-to-viewport'
 
 const isDev = process.env.NODE_ENV === 'develpoment'
 
@@ -76,18 +74,6 @@ export default defineConfig({
         },
         javascriptEnabled: true
       }
-    },
-    postcss: {
-      plugins: [
-        pxtovw({
-          viewportWidth: 750,
-          exclude: [/node_modules\/vant/i]
-        }),
-        pxtovw({
-          viewportWidth: 375,
-          include: [/node_modules\/vant/i]
-        })
-      ]
     }
   },
   build: {
