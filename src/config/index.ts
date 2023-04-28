@@ -2,8 +2,7 @@ import Env from '@/env'
 import merge from '@/utils/merge'
 import { ConfigType, RequiredPick } from '@/types'
 export * from './tabBar'
-export * from './proxy'
-export * from './http'
+export * from 'domain'
 
 const envConfig: Record<string, ConfigType> = {}
 const modules = import.meta.glob('./env/*.ts', { eager: true })

@@ -29,6 +29,7 @@
         </div>
       </li>
     </ul>
+    <div style="height: 168px"></div>
     <template #footer>
       <PageTabbar :tabs="tabBar" />
     </template>
@@ -42,19 +43,16 @@ export default {
 <script setup lang="ts">
 import { onMounted, ref, onActivated } from 'vue'
 import SvgIcon from '@/components/svg-icon.vue'
-import {
-  queryUserInfo,
-  queryImgCode,
-  queryList,
-  queryTcUserInfo
-} from '@/api/user'
+import { queryUserInfo, userLogin } from '@/api/user'
 import PageContainer from '@/components/page/container.vue'
 import PageTabbar from '@/components/page/tabbar.vue'
 import { useRouter } from 'vue-router'
 import { tabBar } from '@/config'
-import ScrollAd from './components/scroll-ad/index.vue'
+import ScrollAd from '@/components/scroll-ad/index.vue'
+import useUserStore from '@/store/user'
 
 const router = useRouter()
+const userStore = useUserStore()
 const shopList = ref(['宝宝巴士', '孙悟空', '毛笔字', '好看的电影'])
 const adList = ref([
   '1.规划师二维码修改为公众号二维码!',
@@ -114,20 +112,15 @@ const navList = [
 ]
 
 onMounted(async () => {
-  // getData()
+  getData()
 })
 onActivated(() => {
   console.log('==========首页激活==========')
 })
+
 async function getData() {
-  const [res] = await queryUserInfo()
-  console.log(res, '=========用户数据')
-  const [imgRes] = await queryImgCode()
-  console.log(imgRes, '=========图片数据')
-  const [listRes] = await queryList()
-  console.log(listRes, '=========列表数据')
-  const [tcRes] = await queryTcUserInfo()
-  console.log(tcRes, '=========tc用户数据')
+  const [res, resErr] = await userStore.getUserInfo()
+  console.log(res, resErr, '=========用户信息')
 }
 
 function toPage(path?: string) {

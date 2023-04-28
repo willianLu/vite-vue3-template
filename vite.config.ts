@@ -17,11 +17,15 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/gs-api': {
-        target: 'http://192.168.11.179:7001',
+        target: 'http://192.168.11.144:7001',
         rewrite: path => path.replace(/^\/gs-api/, '')
       },
+      '/qt-api/': {
+        target: 'http://192.168.11.144:7001',
+        rewrite: path => path.replace(/^\/qt-api/, '')
+      },
       '/tc-api/': {
-        target: 'http://192.168.11.179:7001',
+        target: 'http://192.168.11.144:7001',
         rewrite: path => path.replace(/^\/tc-api/, '')
       }
     }
@@ -114,6 +118,6 @@ export default defineConfig({
   },
   esbuild: {
     // 打包删除console 和 debugger
-    // drop: isDev ? [] : ['console', 'debugger']
+    drop: isDev ? [] : ['console', 'debugger']
   }
 })

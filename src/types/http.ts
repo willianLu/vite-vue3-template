@@ -1,5 +1,4 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { DomainType } from '@/enum'
 
 /**
  * @description 自定义请求配置参数
@@ -22,10 +21,10 @@ export interface CustomResponseData<T = any> {
 /**
  * @description 请求域名gs.com返回数据
  */
-export interface GsResponseData<T = any> {
+export interface GsResponseData<T> {
   status: number
   message: string
-  data: T
+  data: T extends unknown ? (unknown extends T ? any : T) : T
 }
 
 export interface TcResponseData<T = any> {
@@ -36,8 +35,9 @@ export interface TcResponseData<T = any> {
 }
 
 type ResponseDataMap<T> = {
-  [DomainType.gs]: GsResponseData<T>
-  [DomainType.tc]: TcResponseData<T>
+  gs: GsResponseData<T>
+  tc: TcResponseData<T>
+  qt: GsResponseData<T>
 }
 
 type BackData<T, D> = D extends keyof ResponseDataMap<T>

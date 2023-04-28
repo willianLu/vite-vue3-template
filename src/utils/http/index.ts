@@ -25,6 +25,12 @@ HttpRequest.interceptors.response.use(
 )
 /**
  * @description request请求方式，包含get\post\put\delete\head\options\patch等
+ * T 返回数据data的类型 例：返回数据{ code: 200, data: {} }，T 代表 data
+ * D 请求参数的类型
+ * M 返回数据的格式 例：{ code: 200, data: {}, message: ''}
+ * U 使用origin则返回原始的response对象
+ * @returns {Promise<[Data, Error]>} Data 数据；Error 是否报错，有报错时，则代表请求失败
+ * 注意事项：使用async/awiat时，可以不用try/catch
  */
 export function request<T, D, M, U>(
   config: CustomAxiosRequestConfig<D>

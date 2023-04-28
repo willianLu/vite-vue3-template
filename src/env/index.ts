@@ -1,3 +1,4 @@
+import { domain } from '@/config/domain'
 const isDev = import.meta.env.MODE === 'development'
 
 /**
@@ -7,10 +8,12 @@ function buildMultiEnv() {
   const multiEnv = {
     type: 'dev',
     isTest: false,
-    isProd: false
+    isProd: false,
+    domain: {},
+    cookieDomin: 'localhost'
   }
+  const { hostname } = window.location
   if (!isDev) {
-    const { hostname } = window.location
     if (/\.prod\./.test(hostname)) {
       multiEnv.isProd = true
       multiEnv.type = 'prod'
@@ -19,6 +22,11 @@ function buildMultiEnv() {
       multiEnv.type = 'test'
     }
   }
+  // 若需要二级域名共享cookie，则设置顶级域名
+  if (hostname !== 'localhost') {
+    multiEnv.cookieDomin = hostname
+  }
+  multiEnv.domain = (<any>domain)[multiEnv.type]
   return multiEnv
 }
 
@@ -28,6 +36,8 @@ interface Env {
   isTest: boolean
   isProd: boolean
   traceId: string
+  domain: Record<string, string>
+  cookieDomin: string
 }
 
 const env: Env = {

@@ -1,22 +1,20 @@
 import { get, post } from '@/utils/http'
-import { DomainType } from '@/enum'
+import Env from '@/env'
+import { UserInfo } from '@/types'
 
-interface UserInfo {
-  id: number
-  name: string
-  age: number
-  sex: number
+// 用户登录
+export function userLogin(data: any) {
+  return post<unknown, unknown, 'gs'>(Env.domain.gs + '/login', data)
 }
+
 export function queryUserInfo() {
-  return get<UserInfo, unknown, unknown, 'origin'>(
-    'https://www.prod.gs.com/user/info'
-  )
+  return get<UserInfo>(Env.domain.tc + '/user/info')
 }
 
 export function queryImgCode() {
-  return get<any, unknown, DomainType.gs>(
-    'https://www.prod.gs.com/product/imageCode?userData=122323',
-    undefined,
+  return get<any, unknown, 'qt'>(
+    Env.domain.qt + '/product/imageCode',
+    { userData: 122323 },
     {
       skipCommonData: true
     }
@@ -24,7 +22,7 @@ export function queryImgCode() {
 }
 
 export function queryTcUserInfo() {
-  return get('https://www.prod.tc.com/user/info')
+  return get(Env.domain.qt + '/user/info')
 }
 
 export function queryList() {

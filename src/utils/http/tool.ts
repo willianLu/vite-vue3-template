@@ -1,63 +1,14 @@
 import { AxiosResponse } from 'axios'
 import { CustomAxiosRequestConfig } from '@/types'
 import { isObject, isFunction, stringifyQuery } from '@/utils/util'
-import Config, {
+import {
   devProxy,
   commonParams,
   domainParams,
   commonResponse,
   domainResponse
-} from '@/config'
+} from './handleRequest'
 import Env from '@/env'
-
-/**
- * @description 处理自定义返回数据
- * @param {string} code 返回 code
- * @param {string | undefined} message 返回信息
- * @returns {object}
- */
-// export function handleCustomResponseData<T = any>(
-//   code: number,
-//   message?: string,
-//   data?: T
-// ): CustomResponseData<T> {
-//   return {
-//     code,
-//     message: message || '',
-//     data
-//   }
-// }
-
-/**
- * @description 处理域名规则，多域名服务器预发环境处理
- * @param {strung} url 请求url
- * @returns {String} 处理后的url地址
- */
-function handleDomainRule(config: CustomAxiosRequestConfig) {
-  const { domain } = Config
-  if (!domain || !isObject(domain)) return
-  let url = String(config.url || '').trim()
-  const hasDomain = isIncludeDomain(url)
-  // 若配置了域名映射，则对映射做处理
-  if (hasDomain || config.baseURL) {
-    // 若url中包含域名，直接处理url
-    // 当url不包含域名时，则对baseUrl做处理
-    url = (hasDomain ? url : config.baseURL) as string
-    Object.keys(domain).some(key => {
-      // 使用indexOf判断，访问域名与配置一致，减少处理逻辑
-      if (url.indexOf(key) === 0) {
-        const _url = url.replace(key, domain[key])
-        config.originDomain = key
-        if (hasDomain) {
-          config.url = _url
-        } else {
-          config.baseURL = _url
-        }
-        return true
-      }
-    })
-  }
-}
 
 /**
  * @description 处理域名代理
@@ -147,23 +98,28 @@ export function handleRequestRule(config: CustomAxiosRequestConfig) {
   handleCommonParams(config)
   // 开发环境，请求域名代理处理
   handleDomainProxy(config)
-  // 请求URL处理
-  handleDomainRule(config)
   return config
 }
 
+/**
+ * @description 处理请求返回
+ * @param { AxiosResponse } response 请求返回response对象
+ * @returns {AxiosResponse}
+ */
 export function handleResponseRule<T, D>(response: AxiosResponse<T, D>) {
-  commonResponse && commonResponse(response)
   const { config } = response
   const originDomain = (<any>config).originDomain
   if (originDomain && domainResponse) {
+    let fun: any
     Object.keys(domainResponse).some(key => {
       if (key === originDomain) {
-        const fun = domainResponse[key]
-        fun && fun(response)
+        fun = domainResponse[key]
         return true
       }
     })
+    if (fun) {
+      return fun(response)
+    }
   }
-  return response
+  return commonResponse ? commonResponse(response) : response
 }

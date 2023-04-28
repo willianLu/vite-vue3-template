@@ -4,10 +4,9 @@
       <PageNav title="搜索页" />
       <div class="search-wrap flex-v-center">
         <svg-icon name="search" />
-        <van-field
+        <input
           v-model="val"
           placeholder="请输入搜索内容"
-          clearable
           @input="handleInput"
         />
       </div>
@@ -141,7 +140,7 @@ function handleInput() {
     font-size: 32px;
     color: #666;
   }
-  .van-field {
+  input {
     flex: 1;
     padding: 0;
     background-color: transparent;
