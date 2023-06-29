@@ -1,7 +1,7 @@
 <template>
   <PageContainer content-class="custom-content" fullscreen>
     <template #header>
-      <PageNav class="custom-nav" title="H5全屏背景" />
+      <PageNav title="H5全屏背景" />
     </template>
     <div
       style="

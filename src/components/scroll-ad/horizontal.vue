@@ -19,7 +19,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineProps, withDefaults, watch, nextTick, ref, computed } from 'vue'
+import { watch, nextTick, ref, computed } from 'vue'
 import SvgIcon from '@/components/svg-icon.vue'
 import { useWindowSize } from '@vant/use'
 

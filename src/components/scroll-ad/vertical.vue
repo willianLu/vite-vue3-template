@@ -19,16 +19,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import {
-  defineProps,
-  withDefaults,
-  watch,
-  nextTick,
-  ref,
-  computed,
-  onUnmounted,
-  onActivated
-} from 'vue'
+import { watch, nextTick, ref, computed, onUnmounted, onActivated } from 'vue'
 import { useWindowSize } from '@vant/use'
 
 const props = withDefaults(

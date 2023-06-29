@@ -1,22 +1,48 @@
 <template>
   <div class="qt-skeleton" :style="style"></div>
 </template>
-<script setup>
-import { defineProps, computed } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue'
+import type { PropType } from 'vue'
 import { isString, pxToRem } from '@/utils/util'
+
 const props = defineProps({
-  inline: Boolean,
-  width: String | Number,
-  height: String | Number,
-  left: String | Number,
-  right: String | Number,
-  top: String | Number,
-  bottom: String | Number,
+  inline: {
+    type: Boolean,
+    default: false
+  },
+  width: {
+    type: [String, Number] as PropType<string | number>,
+    default: ''
+  },
+  height: {
+    type: [String, Number] as PropType<string | number>,
+    default: ''
+  },
+  left: {
+    type: [String, Number] as PropType<string | number>,
+    default: ''
+  },
+  right: {
+    type: [String, Number] as PropType<string | number>,
+    default: ''
+  },
+  top: {
+    type: [String, Number] as PropType<string | number>,
+    default: ''
+  },
+  bottom: {
+    type: [String, Number] as PropType<string | number>,
+    default: ''
+  },
   round: Boolean,
-  radius: String
+  radius: {
+    type: String,
+    default: ''
+  }
 })
 const style = computed(() => {
-  const res = {}
+  const res: any = {}
   if (props.width) {
     res.width = getValueUnit(props.width)
   }
@@ -46,7 +72,7 @@ const style = computed(() => {
   }
   return res
 })
-function getValueUnit(num) {
+function getValueUnit(num: string | number) {
   if (isString(num) && num.endsWith('%')) {
     return num
   }

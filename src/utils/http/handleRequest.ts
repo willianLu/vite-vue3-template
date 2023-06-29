@@ -1,11 +1,12 @@
 import Env from '@/env'
+import Config from '@/config'
 import { CommonParams, DomainParams } from '@/types'
 
 // 开发环境代理key处理
 export const devProxy: Record<string, string> = {
-  [Env.domain.gs]: '/gs-api',
-  [Env.domain.qt]: '/qt-api',
-  [Env.domain.tc]: '/tc-api'
+  [Config.domain.gs]: '/gs-api',
+  [Config.domain.qt]: '/qt-api',
+  [Config.domain.tc]: '/tc-api'
 }
 
 // 公共参数，所有域名都支持
@@ -15,13 +16,13 @@ export const commonParams: CommonParams = {
 
 // 多域名参数配置
 export const domainParams: DomainParams = {
-  [Env.domain.gs]: {
+  [Config.domain.gs]: {
     domain: 'gs'
   },
-  [Env.domain.qt]: {
+  [Config.domain.qt]: {
     flag: 'qt'
   },
-  [Env.domain.tc]: function () {
+  [Config.domain.tc]: function () {
     return {
       domain: 'tc',
       name: 'tc-qiang'
@@ -38,19 +39,19 @@ export const commonResponse = (response: any) => {
 
 // 多域名response返回处理
 export const domainResponse: Record<string, (response: any) => void> = {
-  [Env.domain.gs]: function (response) {
+  [Config.domain.gs]: function (response) {
     const data = response.data
     if (data) {
       response.data.gs = 'gs处理'
     }
     return response
   },
-  [Env.domain.qt]: function (response) {
+  [Config.domain.qt]: function (response) {
     if (response.data) {
       response.data.qt = 'qt处理'
     }
   },
-  [Env.domain.tc]: function (response) {
+  [Config.domain.tc]: function (response) {
     const data = response.data
     const error = new Error()
     if (data.code === 401) {

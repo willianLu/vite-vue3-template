@@ -35,11 +35,6 @@
     </template>
   </PageContainer>
 </template>
-<script lang="ts">
-export default {
-  name: 'HomePage'
-}
-</script>
 <script setup lang="ts">
 import { onMounted, ref, onActivated } from 'vue'
 import SvgIcon from '@/components/svg-icon.vue'
@@ -51,6 +46,9 @@ import { tabBar } from '@/config'
 import ScrollAd from '@/components/scroll-ad/index.vue'
 import useUserStore from '@/store/user'
 
+defineOptions({
+  name: 'HomePage'
+})
 const router = useRouter()
 const userStore = useUserStore()
 const shopList = ref(['宝宝巴士', '孙悟空', '毛笔字', '好看的电影'])
@@ -61,6 +59,12 @@ const adList = ref([
   '4.规定完成动画所花费的时间，以秒或毫秒计！'
 ])
 const navList = [
+  {
+    name: 'Login',
+    icon: 'smile',
+    title: '去登录',
+    path: '/login'
+  },
   {
     name: 'Svg Icon',
     icon: 'icon',

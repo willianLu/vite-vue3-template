@@ -9,13 +9,16 @@
 import { watch } from 'vue'
 import usePageAliveStore from '@/store/page-alive'
 import { useWindowSize } from '@vant/use'
-const { width } = useWindowSize()
+// 获取window的大小
+const rect = useWindowSize()
+// 根据屏幕宽度设置rem数值
 function setRemUnit() {
-  const rem = (width.value > 750 ? 750 : width.value) / 10
+  const width = rect.width.value > 750 ? 750 : rect.width.value
+  const rem = width / 10
   document.documentElement.style.fontSize = rem + 'px'
 }
 setRemUnit()
-watch([width], () => {
+watch([rect.width], () => {
   setRemUnit()
 })
 const pageAliveStore = usePageAliveStore()
@@ -28,5 +31,6 @@ const pageAliveStore = usePageAliveStore()
   margin: 0 auto;
   font-size: 24px;
   overflow-y: auto;
+  box-shadow: 0 0 6px 2px #ddd;
 }
 </style>

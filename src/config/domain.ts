@@ -1,5 +1,5 @@
 // 多域名配置
-export const domain = {
+const domain = {
   dev: {
     tc: 'https://www.tc.dev.com',
     qt: 'https://www.qt.dev.com',
@@ -16,3 +16,5 @@ export const domain = {
     gs: 'https://www.gs.prod.com'
   }
 }
+
+export default domain

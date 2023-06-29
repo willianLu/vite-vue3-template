@@ -1,6 +1,11 @@
 <template>
   <main class="page-container">
-    <header v-if="$slots.header" class="page-header" :class="headerClassName">
+    <header
+      v-if="$slots.header"
+      ref="header"
+      class="page-header"
+      :class="headerClassName"
+    >
       <slot name="header"></slot>
     </header>
     <section class="page-content" :style="contentStyle" @scroll="handleScroll">
@@ -12,68 +17,80 @@
         <slot></slot>
       </div>
     </section>
-    <footer v-if="$slots.footer" class="page-footer" :class="footerClass">
+    <footer
+      v-if="$slots.footer"
+      ref="footer"
+      class="page-footer"
+      :class="footerClass"
+    >
       <slot name="footer"></slot>
     </footer>
   </main>
 </template>
-<script setup>
-import { defineProps, defineEmits, ref, computed, useSlots } from 'vue'
-import { pxToRem } from '@/utils/util'
-const slots = useSlots()
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import Config from '@/config'
 const props = defineProps({
+  // 是否全屏显示
   fullscreen: Boolean,
-  headerClass: String,
-  footerClass: String,
-  contentClass: String,
-  headerHeight: {
-    type: Number,
-    default: 88
+  headerClass: {
+    type: String,
+    default: ''
   },
-  footerHeight: {
-    type: Number,
-    default: 0
+  footerClass: {
+    type: String,
+    default: ''
+  },
+  contentClass: {
+    type: String,
+    default: ''
   }
 })
 const emits = defineEmits(['scroll'])
+const header = ref<HTMLElement>()
+const footer = ref<HTMLElement>()
+// 全屏状态下，是否自动吸顶
 const isSticky = ref(false)
+// 全屏状态下，内容框样式设置
 const contentStyle = computed(() => {
+  if (!props.fullscreen) return ''
   let str = ''
-  if (props.fullscreen) {
-    if (slots.header && props.headerHeight) {
-      str += getFullStyle(props.headerHeight, 'top')
-    }
-    if (slots.footer && props.footerHeight) {
-      str += getFullStyle(props.footerHeight, 'bottom')
-    }
+  if (header.value) {
+    str += getFullStyle(header.value.clientHeight, 'top')
+  }
+  if (footer.value) {
+    str += getFullStyle(footer.value.clientHeight, 'bottom')
   }
   return str
 })
+// 设置头部自定义class
 const headerClassName = computed(() => {
   let str = props.headerClass || ''
-  if (props.fullscreen && props.headerHeight && !isSticky.value) {
+  if (
+    props.fullscreen &&
+    header.value &&
+    header.value.clientHeight &&
+    !isSticky.value
+  ) {
     str += ' custom-page-header'
   }
   return str
 })
-function getFullStyle(num, type) {
+function getFullStyle(num: number, type: 'top' | 'bottom') {
   let str = ''
   const p = `padding-${type}`
   const m = `margin-${type}`
-  const s = `safe-area-inset-${type}`
-  const val = pxToRem(num)
+  const val = num + 'px'
   str += `${p}:${val};`
-  str += `${p}:calc(${val} + constant(${s}));`
-  str += `${p}:calc(${val} + env(${s}));`
   str += `${m}:-${val};`
-  str += `${m}:calc(-${val} - constant(${s}));`
-  str += `${m}:calc(-${val} - env(${s}));`
   return str
 }
-function handleScroll(event) {
-  if (props.fullscreen && props.headerHeight) {
+function handleScroll(event: any) {
+  // 全屏状态下，设置吸顶
+  if (props.fullscreen && header.value && header.value.clientHeight) {
     isSticky.value =
-      event.target.scrollTop > (props.headerHeight / 750) * window.innerWidth
+      event.target.scrollTop >
+      (header.value.clientHeight / Config.viewportWidth) * window.innerWidth
   }
   emits('scroll', event)
 }
@@ -120,11 +137,9 @@ function handleScroll(event) {
 .custom-page-header {
   background-color: transparent;
   border-color: transparent;
-  :deep(.custom-nav) {
-    .title,
-    .back {
-      color: #fff;
-    }
+  :deep(.van-nav-bar) {
+    --van-nav-bar-title-text-color: #fff;
+    --van-nav-bar-icon-color: #fff;
   }
 }
 </style>

@@ -16,7 +16,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import SvgIcon from '../svg-icon.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { Tabbar } from '@/types'

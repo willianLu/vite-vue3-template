@@ -4,7 +4,7 @@
     round
     :style="popupStyle"
     @open="handlePopupOpen"
-    @clickOverlay="handleClickOverlay"
+    @click-overlay="handleClickOverlay"
   >
     <section
       ref="container"
@@ -21,20 +21,13 @@
     </section>
   </van-popup>
 </template>
-<script setup>
-import {
-  reactive,
-  ref,
-  computed,
-  unref,
-  defineEmits,
-  defineProps,
-  nextTick
-} from 'vue'
+<script setup lang="ts">
+import { reactive, ref, computed, unref, nextTick } from 'vue'
 // 是否支持滑动
 const isSupporTouch =
   'ontouchstart' in window ||
-  (window.DocumentTouch && document instanceof window.DocumentTouch)
+  ((window as any).DocumentTouch &&
+    document instanceof (window as any).DocumentTouch)
 const props = defineProps({
   title: {
     type: String,
@@ -63,12 +56,12 @@ const popupStyle = computed(() => {
 })
 
 // 样式值公共方法
-function transformStyle(top, end) {
+function transformStyle(top: number, isEnd: boolean) {
   return `transform: translateX(0px) translateY(${top}px) translateZ(1px); transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1); transition-property: transform; transition-duration: ${
-    end ? 300 : 0
+    isEnd ? 300 : 0
   }ms;`
 }
-function handleTouchStart(event) {
+function handleTouchStart(event: TouchEvent) {
   // 不支持touch时return，与页面设置保持统一
   if (!isSupporTouch) return
   refer.y = event.touches[0].pageY
@@ -76,7 +69,7 @@ function handleTouchStart(event) {
   refer.contentScrollTop = content.value.scrollTop
   refer.direction = ''
 }
-function handleTouchMove(event) {
+function handleTouchMove(event: TouchEvent) {
   // 不支持touch时return，与页面设置保持统一
   if (!isSupporTouch) return
   const y = event.touches[0].pageY
@@ -110,7 +103,7 @@ function handleTouchEnd() {
   refer.isEnd = true
 }
 // 判断是否在滑动内容内
-function judgeScrollBox(target) {
+function judgeScrollBox(target: EventTarget | null) {
   const element = unref(content)
   return !!(element && element.contains(target))
 }

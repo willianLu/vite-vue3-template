@@ -22,6 +22,7 @@ declare module '@vue/runtime-core' {
     PageHeader: typeof import('./src/components/Page/PageHeader.vue')['default']
     PageNav: typeof import('./src/components/Page/PageNav.vue')['default']
     PageTabbar: typeof import('./src/components/Page/PageTabbar.vue')['default']
+    Password: typeof import('./src/components/field/password.vue')['default']
     PopupBottom: typeof import('./src/components/Popup/PopupBottom.vue')['default']
     PopupCenter: typeof import('./src/components/Popup/PopupCenter.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -37,7 +38,10 @@ declare module '@vue/runtime-core' {
     VanField: typeof import('vant/es')['Field']
     VanInput: typeof import('vant/es')['Input']
     VanList: typeof import('vant/es')['List']
+    VanNavBar: typeof import('vant/es')['NavBar']
+    VanOverlay: typeof import('vant/es')['Overlay']
     VanPopup: typeof import('vant/es')['Popup']
+    VanRadio: typeof import('vant/es')['Radio']
     VanSkeleton: typeof import('vant/es')['Skeleton']
     Vertical: typeof import('./src/components/scroll-ad/vertical.vue')['default']
   }

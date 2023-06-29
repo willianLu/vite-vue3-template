@@ -1,19 +1,19 @@
 import { get, post } from '@/utils/http'
-import Env from '@/env'
 import { UserInfo } from '@/types'
+import Config from '@/config'
 
 // 用户登录
 export function userLogin(data: any) {
-  return post<unknown, unknown, 'gs'>(Env.domain.gs + '/login', data)
+  return post<unknown, unknown, 'gs'>(Config.domain.gs + '/login', data)
 }
 
 export function queryUserInfo() {
-  return get<UserInfo>(Env.domain.tc + '/user/info')
+  return get<UserInfo>(Config.domain.tc + '/user/info')
 }
 
 export function queryImgCode() {
   return get<any, unknown, 'qt'>(
-    Env.domain.qt + '/product/imageCode',
+    Config.domain.qt + '/product/imageCode',
     { userData: 122323 },
     {
       skipCommonData: true
@@ -22,7 +22,7 @@ export function queryImgCode() {
 }
 
 export function queryTcUserInfo() {
-  return get(Env.domain.qt + '/user/info')
+  return get(Config.domain.qt + '/user/info')
 }
 
 export function queryList() {

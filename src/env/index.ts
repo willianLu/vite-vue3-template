@@ -1,49 +1,37 @@
-import { domain } from '@/config/domain'
-const isDev = import.meta.env.MODE === 'development'
-
-/**
- * 构建多环境
- */
-function buildMultiEnv() {
-  const multiEnv = {
-    type: 'dev',
-    isTest: false,
-    isProd: false,
-    domain: {},
-    cookieDomin: 'localhost'
-  }
-  const { hostname } = window.location
-  if (!isDev) {
-    if (/\.prod\./.test(hostname)) {
-      multiEnv.isProd = true
-      multiEnv.type = 'prod'
-    } else {
-      multiEnv.isTest = true
-      multiEnv.type = 'test'
-    }
-  }
-  // 若需要二级域名共享cookie，则设置顶级域名
-  if (hostname !== 'localhost') {
-    multiEnv.cookieDomin = hostname
-  }
-  multiEnv.domain = (<any>domain)[multiEnv.type]
-  return multiEnv
-}
-
-interface Env {
+interface EnvType {
   type: 'dev' | 'test' | 'prod'
   isDev: boolean
   isTest: boolean
   isProd: boolean
   traceId: string
-  domain: Record<string, string>
   cookieDomin: string
 }
-
-const env: Env = {
+// 是否本地开发环境
+const isDev = import.meta.env.MODE === 'development'
+/**
+ * @description 环境配置
+ * 挂载当前工作环境、域名配置等
+ */
+const env: EnvType = {
+  type: 'dev',
   isDev,
-  ...buildMultiEnv(),
+  isTest: false,
+  isProd: false,
+  cookieDomin: 'localhost',
   traceId: '123456789'
-} as Env
+}
+// 根据域名识别当前环境
+const { hostname } = window.location
+if (!isDev && /\.prod\./.test(hostname)) {
+  env.isProd = true
+  env.type = 'prod'
+} else if (!isDev) {
+  env.isTest = true
+  env.type = 'test'
+}
+// 若需要二级域名共享cookie，则设置顶级域名
+if (hostname !== 'localhost') {
+  env.cookieDomin = hostname
+}
 
 export default env

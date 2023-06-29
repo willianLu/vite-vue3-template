@@ -1,4 +1,4 @@
 import { ConfigType } from '@/types/config'
-const config: ConfigType = {}
+const config: Partial<ConfigType> = {}
 
 export default config
