@@ -40,7 +40,7 @@
         <span class="agreement-bar" @click="toPage('ForgetPasswordPage')"
           >忘记密码？</span
         >
-        <span class="agreement-bar">注册</span>
+        <span class="agreement-bar" @click="toPage('RegisterPage')">注册</span>
       </div>
     </div>
     <div class="flex-center wx-icon">

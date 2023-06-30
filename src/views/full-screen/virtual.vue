@@ -24,8 +24,8 @@ export default {
 }
 </script>
 <script setup>
-import PageContainer from '@/components/Page/container.vue'
-import PageNav from '@/components/Page/nav.vue'
+import PageContainer from '@/components/page/container.vue'
+import PageNav from '@/components/page/nav.vue'
 </script>
 <style lang="less" scoped>
 :deep(.custom-content) {

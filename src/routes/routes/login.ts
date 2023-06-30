@@ -25,6 +25,11 @@ const routes: RouteRecordRaw[] = [
     name: 'ModifyPasswordPage',
     path: '/modify-password',
     component: () => import('@/views/login/modifyPassword.vue')
+  },
+  {
+    name: 'RegisterPage',
+    path: '/register',
+    component: () => import('@/views/login/register.vue')
   }
 ]
 

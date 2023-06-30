@@ -1,5 +1,9 @@
 <template>
-  <PageContainer content-class="custom-content" fullscreen>
+  <PageContainer
+    content-class="custom-content"
+    fullscreen
+    :footer-overlay="false"
+  >
     <template #header>
       <PageNav title="H5全屏背景-底部吸顶(实体)" />
     </template>
@@ -14,8 +18,8 @@
   </PageContainer>
 </template>
 <script setup>
-import PageContainer from '@/components/Page/container.vue'
-import PageNav from '@/components/Page/nav.vue'
+import PageContainer from '@/components/page/container.vue'
+import PageNav from '@/components/page/nav.vue'
 </script>
 <style lang="less" scoped>
 :deep(.custom-content) {

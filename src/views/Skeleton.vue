@@ -34,8 +34,8 @@
   </PageContainer>
 </template>
 <script setup>
-import PageContainer from '@/components/Page/container.vue'
-import PageNav from '@/components/Page/nav.vue'
+import PageContainer from '@/components/page/container.vue'
+import PageNav from '@/components/page/nav.vue'
 import QtSkeleton from '@/components/skeleton/index.vue'
 </script>
 <style lang="less" scoped>

@@ -55,8 +55,8 @@
 </template>
 <script setup>
 import { ref, computed, reactive } from 'vue'
-import PageContainer from '@/components/Page/container.vue'
-import PageNav from '@/components/Page/nav.vue'
+import PageContainer from '@/components/page/container.vue'
+import PageNav from '@/components/page/nav.vue'
 import QtSkeleton from '@/components/Skeleton/index.vue'
 import { delay } from '@/utils/util'
 const loading = ref(false)

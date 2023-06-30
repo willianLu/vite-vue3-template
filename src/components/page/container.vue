@@ -44,6 +44,10 @@ const props = defineProps({
   contentClass: {
     type: String,
     default: ''
+  },
+  footerOverlay: {
+    type: Boolean,
+    default: true
   }
 })
 const emits = defineEmits(['scroll'])
@@ -58,7 +62,7 @@ const contentStyle = computed(() => {
   if (header.value) {
     str += getFullStyle(header.value.clientHeight, 'top')
   }
-  if (footer.value) {
+  if (footer.value && props.footerOverlay) {
     str += getFullStyle(footer.value.clientHeight, 'bottom')
   }
   return str
