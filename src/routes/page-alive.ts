@@ -1,7 +1,8 @@
 import { RouteLocationNormalized } from 'vue-router'
 import usePageAliveStore from '@/store/page-alive'
 import { PageAliveRoute } from '@/types'
-let pageId = 0
+// 页面ID, 用作keep-alive内组件的key
+let pageId = Date.now()
 // 处理页面缓存
 export function handlePageAlive(
   to: RouteLocationNormalized,
@@ -23,7 +24,9 @@ export function handlePageAlive(
   // 前一次访问的路由信息
   const preCurrent = current
   // 查找缓存中是否包含当前路由的name
-  const index = to.name ? names.findIndex(item => item === to.name) : -1
+  const index = to.name
+    ? names.findIndex((item: string) => item === to.name)
+    : -1
   // 设置当前的路由信息
   current = {
     fullPath: to.fullPath,
