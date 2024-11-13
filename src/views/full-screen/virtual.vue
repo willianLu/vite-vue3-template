@@ -1,16 +1,12 @@
 <template>
-  <PageContainer
-    content-class="custom-content"
-    footer-class="footer-box"
-    fullscreen
-    :footer-height="138"
-  >
+  <PageContainer fullscreen>
     <template #header>
       <PageNav title="H5全屏背景-底部吸顶(虚体)" />
     </template>
-    <div
-      style="margin: 16px 0 120px; height: 1000px; background-color: #fff"
-    ></div>
+    <div class="custom-content">
+      <div style="height: 1000px; background-color: #fff"></div>
+    </div>
+
     <template #footer>
       <div class="footer-btn flex-center">
         <svg-icon name="add-outline"></svg-icon>
@@ -18,26 +14,21 @@
     </template>
   </PageContainer>
 </template>
-<script>
-export default {
-  name: 'FullScreenPage'
-}
-</script>
-<script setup>
+<script setup lang="ts">
 import PageContainer from '@/components/page/container.vue'
 import PageNav from '@/components/page/nav.vue'
+
+defineOptions({
+  name: 'FullScreenPage'
+})
 </script>
 <style lang="less" scoped>
-:deep(.custom-content) {
+.custom-content {
   padding: 0 24px;
   background: url(@/assets/images/full_bg.png) no-repeat,
     url(@/assets/images/full_bottom_bg.png) no-repeat, #faf2ff;
   background-size: 100% auto;
   background-position: 0 0, left bottom;
-}
-:deep(.footer-box) {
-  background-color: transparent;
-  border: none;
 }
 .footer-btn {
   margin: 24px auto;

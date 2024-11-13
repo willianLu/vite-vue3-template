@@ -15,8 +15,9 @@
     "js-cookie": "^3.0.5",
     "pinia": "^2.0.29",
     "vant": "^4.0.3",
-    "vue": "^3.2.37",
-    "vue-router": "^4.1.6"
+    "vue": "^3.5.12",
+    "vue-router": "^4.1.6",
+    "yyeva": "^1.1.0-beta.5"
   },
   "devDependencies": {
     "@nabla/vite-plugin-eslint": "^1.4.1",
@@ -45,7 +46,7 @@
     "typescript": "^4.8.4",
     "unplugin-vue-components": "^0.22.12",
     "validate-commit-msg": "^2.14.0",
-    "vite": "^3.1.0",
+    "vite": "^3.2.11",
     "vite-plugin-compression2": "^0.1.0",
     "vite-plugin-pwa": "^0.13.1",
     "vite-svg-loader": "^3.6.0",

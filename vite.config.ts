@@ -115,9 +115,9 @@ export default defineConfig({
         }
       }
     }
-  },
-  esbuild: {
-    // 打包删除console 和 debugger
-    drop: isDev ? [] : ['console', 'debugger']
   }
+  // esbuild: {
+  // 打包删除console 和 debugger
+  // drop: isDev ? [] : ['console', 'debugger']
+  // }
 })

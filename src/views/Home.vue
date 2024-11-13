@@ -112,6 +112,10 @@ const navList = [
   {
     title: '搜索页',
     path: '/search'
+  },
+  {
+    title: '视频特效',
+    path: '/specialEffect'
   }
 ]
 

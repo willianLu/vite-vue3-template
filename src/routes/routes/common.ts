@@ -20,6 +20,11 @@ const routes: RouteRecordRaw[] = [
     name: 'SearchPage',
     path: '/search',
     component: () => import('@/views/search/index.vue')
+  },
+  {
+    name: 'SpecialEffect',
+    path: '/specialEffect',
+    component: () => import('@/views/SpecialEffect.vue')
   }
 ]
 

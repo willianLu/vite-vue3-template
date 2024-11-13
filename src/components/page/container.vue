@@ -1,149 +1,131 @@
 <template>
-  <main class="page-container">
-    <header
-      v-if="$slots.header"
-      ref="header"
-      class="page-header"
-      :class="headerClassName"
-    >
-      <slot name="header"></slot>
-    </header>
-    <section class="page-content" :style="contentStyle" @scroll="handleScroll">
-      <div
-        class="page-content-wrap"
-        :class="contentClass"
-        :style="contentStyle"
-      >
-        <slot></slot>
+  <div class="qt-page">
+    <div v-if="$slots.header" ref="header">
+      <div class="qt-page__header">
+        <slot name="header"></slot>
       </div>
-    </section>
-    <footer
-      v-if="$slots.footer"
-      ref="footer"
-      class="page-footer"
-      :class="footerClass"
+    </div>
+    <div
+      ref="content"
+      class="qt-page__content"
+      :style="contentStyle"
+      @scroll="handleScroll"
     >
-      <slot name="footer"></slot>
-    </footer>
-  </main>
+      <div
+        v-if="fullScreen && inViewport"
+        ref="viewport"
+        class="qt-page__viewport"
+      ></div>
+      <slot></slot>
+    </div>
+    <div v-if="$slots.footer" ref="footer">
+      <div class="qt-page__footer">
+        <slot name="footer"></slot>
+      </div>
+    </div>
+  </div>
 </template>
-<script setup lang="ts">
-import { ref, computed } from 'vue'
-import Config from '@/config'
+<script lang="ts" setup>
+import { ref, onMounted, useSlots, watch, nextTick } from 'vue'
+import { useWindowSize } from '@vant/use'
 const props = defineProps({
-  // 是否全屏显示
-  fullscreen: Boolean,
-  headerClass: {
-    type: String,
-    default: ''
-  },
-  footerClass: {
-    type: String,
-    default: ''
-  },
-  contentClass: {
-    type: String,
-    default: ''
-  },
-  footerOverlay: {
+  fullScreen: {
     type: Boolean,
-    default: true
+    default: false
+  },
+  inViewport: {
+    type: Boolean,
+    default: false
   }
 })
-const emits = defineEmits(['scroll'])
+const emits = defineEmits(['scroll', 'inViewportAction'])
+
+const slots = useSlots()
+const contentStyle = ref({})
+const { width } = useWindowSize()
 const header = ref<HTMLElement>()
 const footer = ref<HTMLElement>()
-// 全屏状态下，是否自动吸顶
-const isSticky = ref(false)
-// 全屏状态下，内容框样式设置
-const contentStyle = computed(() => {
-  if (!props.fullscreen) return ''
-  let str = ''
-  if (header.value) {
-    str += getFullStyle(header.value.clientHeight, 'top')
-  }
-  if (footer.value && props.footerOverlay) {
-    str += getFullStyle(footer.value.clientHeight, 'bottom')
-  }
-  return str
+const content = ref<HTMLElement>()
+const viewport = ref<HTMLElement>()
+const isInViewport = ref(true)
+
+defineExpose({
+  content
 })
-// 设置头部自定义class
-const headerClassName = computed(() => {
-  let str = props.headerClass || ''
-  if (
-    props.fullscreen &&
-    header.value &&
-    header.value.clientHeight &&
-    !isSticky.value
-  ) {
-    str += ' custom-page-header'
+watch(
+  () => [width.value],
+  () => {
+    handleFullScreen()
   }
-  return str
+)
+onMounted(() => {
+  handleFullScreen()
 })
-function getFullStyle(num: number, type: 'top' | 'bottom') {
-  let str = ''
-  const p = `padding-${type}`
-  const m = `margin-${type}`
-  const val = num + 'px'
-  str += `${p}:${val};`
-  str += `${m}:-${val};`
-  return str
+function handleFullScreen() {
+  if (!props.fullScreen) return
+  nextTick(() => {
+    const styleObj = {
+      '--offset-top': '0px',
+      '--offset-bottom': '0px'
+    }
+    if (slots.header && header.value) {
+      styleObj['--offset-top'] = header.value.clientHeight + 'px'
+    }
+    if (slots.footer && footer.value) {
+      styleObj['--offset-bottom'] = footer.value.clientHeight + 'px'
+    }
+    contentStyle.value = styleObj
+  })
 }
-function handleScroll(event: any) {
-  // 全屏状态下，设置吸顶
-  if (props.fullscreen && header.value && header.value.clientHeight) {
-    isSticky.value =
-      event.target.scrollTop >
-      (header.value.clientHeight / Config.viewportWidth) * window.innerWidth
-  }
+function handleScroll(event: Event) {
   emits('scroll', event)
+  // 判断设定元素是否在可视区域内
+  if (props.inViewport && viewport.value) {
+    const target = event.target as HTMLElement
+    const __isInViewport = target.scrollTop <= viewport.value.offsetTop
+    if (isInViewport.value !== __isInViewport) {
+      isInViewport.value = __isInViewport
+      emits('inViewportAction', isInViewport.value)
+    }
+  }
 }
 </script>
 <style lang="less" scoped>
-.page-container {
+.qt-page {
+  --offet-top: 0;
+  --offet-bottom: 0;
+  --qt-page-background-color: #f4f6f8;
   position: relative;
+  z-index: 0;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #f7f8fb;
+  background-color: var(--qt-page-background-color);
   overflow: hidden;
-}
-.page-header {
-  flex-shrink: 0;
-  z-index: 1;
-  padding-top: constant(safe-area-inset-top);
-  padding-top: env(safe-area-inset-top);
-  background-color: #fff;
-  border-bottom: 1px solid #eeeff1;
-}
-.page-content {
-  position: relative;
-  z-index: 0;
-  flex: 1;
-  box-sizing: content-box;
-  overflow-y: auto;
-}
-.page-content-wrap {
-  min-height: 100%;
-  box-sizing: content-box;
-  overflow: hidden;
-}
-.page-footer {
-  z-index: 1;
-  flex-shrink: 0;
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
-  background-color: #fff;
-  border-top: 1px solid #eeeff1;
-}
-.custom-page-header {
-  background-color: transparent;
-  border-color: transparent;
-  :deep(.van-nav-bar) {
-    --van-nav-bar-title-text-color: #fff;
-    --van-nav-bar-icon-color: #fff;
+  &__header,
+  &__footer {
+    position: relative;
+    z-index: 90;
+  }
+  &__content {
+    position: relative;
+    margin-top: calc(var(--offset-top) * -1);
+    margin-bottom: calc(var(--offset-bottom) * -1);
+    padding-top: calc(var(--offset-top));
+    padding-bottom: calc(var(--offset-bottom));
+    flex: 1;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overscroll-behavior: none;
+  }
+  &__viewport {
+    position: absolute;
+    top: var(--offset-top);
+    left: 0;
+    width: 100%;
+    height: 1px;
   }
 }
 </style>
